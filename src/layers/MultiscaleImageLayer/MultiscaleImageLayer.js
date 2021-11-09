@@ -9,6 +9,7 @@ import {
   isInterleaved,
   SIGNAL_ABORTED
 } from '../../loaders/utils';
+import { getDefaultInitialViewState } from '../../views';
 
 const defaultProps = {
   pickable: { type: 'boolean', value: true, compare: true },
@@ -72,7 +73,8 @@ const MultiscaleImageLayer = class extends CompositeLayer {
       modelMatrix,
       transparentColor,
       excludeBackground,
-      refinementStrategy
+      refinementStrategy,
+      minZoom
     } = this.props;
 
     // Get properties from highest resolution
@@ -143,8 +145,19 @@ const MultiscaleImageLayer = class extends CompositeLayer {
         throw err;
       }
     };
-
     const { height, width } = getImageSize(loader[0]);
+    const defaultMinZoom = Math.max(
+      -(loader.length - 1),
+      Math.ceil(
+        getDefaultInitialViewState(
+          loader,
+          this.context.deck,
+          0.5,
+          false,
+          modelMatrix
+        ).zoom
+      )
+    );
     const tiledLayer = new MultiscaleImageLayerBase(this.props, {
       id: `Tiled-Image-${id}`,
       getTileData,
@@ -159,7 +172,7 @@ const MultiscaleImageLayer = class extends CompositeLayer {
       ),
       extent: [0, 0, width, height],
       // See the above note within for why the use of zoomOffset and the rounding necessary.
-      minZoom: Math.round(-(loader.length - 1)),
+      minZoom: minZoom || defaultMinZoom,
       maxZoom: 0,
       // We want a no-overlap caching strategy with an opacity < 1 to prevent
       // multiple rendered sublayers (some of which have been cached) from overlapping

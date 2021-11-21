@@ -18,7 +18,6 @@ import { DEFAULT_OVERVIEW } from '../constants';
 
 const Viewer = () => {
   const { useLinkedView, setViewerState, use3d, viewState } = useViewerStore();
-  console.log(viewState)
   const {
     colors,
     contrastLimits,

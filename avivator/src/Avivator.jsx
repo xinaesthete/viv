@@ -19,7 +19,6 @@ import './index.css';
 export default function Avivator(props) {
   const { history, source: initSource, isDemoImage } = props;
   const { isViewerLoading, setViewerState, source } = useViewerStore();
-
   useEffect(() => {
     setViewerState({ source: initSource, isNoImageUrlSnackbarOn: isDemoImage });
   }, []);

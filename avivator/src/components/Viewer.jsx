@@ -18,6 +18,7 @@ import { DEFAULT_OVERVIEW } from '../constants';
 
 const Viewer = () => {
   const { useLinkedView, setViewerState, use3d, viewState } = useViewerStore();
+  console.log(viewState)
   const {
     colors,
     contrastLimits,
@@ -85,6 +86,12 @@ const Viewer = () => {
       isLensOn={isLensOn}
       onViewportLoad={onViewportLoad}
       extensions={[new LensExtension()]}
+      onViewStateChange={debounce(
+        ({ viewState: newViewState, viewId }) =>
+          setViewerState({ viewState: { ...newViewState, id: viewId } }),
+        250,
+        { trailing: true }
+      )}
     />
   ) : (
     <PictureInPictureViewer
@@ -105,6 +112,12 @@ const Viewer = () => {
       isLensOn={isLensOn}
       onViewportLoad={onViewportLoad}
       extensions={[new LensExtension()]}
+      onViewStateChange={debounce(
+        ({ viewState: newViewState, viewId }) =>
+          setViewerState({ viewState: { ...newViewState, id: viewId } }),
+        250,
+        { trailing: true }
+      )}
     />
   );
 };

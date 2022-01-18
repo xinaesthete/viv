@@ -4,6 +4,7 @@ import { Matrix4 } from 'math.gl';
 
 import ImageLayer from './ImageLayer';
 import { getImageSize } from '../loaders/utils';
+import { ColorPaletteExtension } from '../extensions';
 
 const defaultProps = {
   pickable: { type: 'boolean', value: true, compare: true },
@@ -32,7 +33,12 @@ const defaultProps = {
   viewportOutlineColor: { type: 'array', value: [255, 190, 0], compare: true },
   viewportOutlineWidth: { type: 'number', value: 2, compare: true },
   overviewScale: { type: 'number', value: 1, compare: true },
-  zoom: { type: 'number', value: 1, compare: true }
+  zoom: { type: 'number', value: 1, compare: true },
+  extensions: {
+    type: 'array',
+    value: [new ColorPaletteExtension()],
+    compare: true
+  }
 };
 
 /**

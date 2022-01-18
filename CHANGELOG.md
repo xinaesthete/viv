@@ -6,6 +6,8 @@
 
 ### Changed
 - Upgrade geotiff fork to viv-0.0.3 to resolve 416 issue
+- Clarify docs on `extensions`
+- Fix `OverviewLayer` default `extensions` prop.
 
 ## 0.12.3
 

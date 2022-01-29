@@ -5,9 +5,23 @@
 ### Added
 
 ### Changed
+- Fix `OverviewLayer` default `extensions` prop.
+
+## 0.12.5
+
+### Added
+
+### Changed
+- Fix geotiff file size check, implemented when fixing 416 issue.  Not all servers return file size as part of response.
+
+## 0.12.4
+
+### Added
+
+### Changed
 - Upgrade geotiff fork to viv-0.0.3 to resolve 416 issue
 - Clarify docs on `extensions`
-- Fix `OverviewLayer` default `extensions` prop.
+- Disable `@vite/plugin-react` for ESM build
 
 ## 0.12.3
 
@@ -16,6 +30,7 @@
 ### Changed
 
 - Fix multi-image tiff indexing.
+- Change `ScaleBarLayer` to use `toPrecision` instead of string cutoff.
 
 ## 0.12.2
 

@@ -52,12 +52,16 @@ function getRenderingAttrs(dtype, gl, interpolation) {
   // Very cursed!
   const upgradedShaderModule = { ...coreShaderModule };
   const version300str = '#version 300 es\n';
-  upgradedShaderModule.fs = version300str.concat(upgradedShaderModule.fs);
-  upgradedShaderModule.vs = version300str.concat(upgradedShaderModule.vs);
+  upgradedShaderModule.fs = version300str.concat(
+    upgradedShaderModule.fs.slice()
+  );
+  upgradedShaderModule.vs = version300str.concat(
+    upgradedShaderModule.vs.slice()
+  );
   const values = getDtypeValues(isLinear ? 'Float32' : dtype);
   return {
     ...values,
-    shaderModule: upgradedShaderModule,
+    shaderModule: { ...upgradedShaderModule },
     filter: interpolation,
     cast: isLinear ? data => new Float32Array(data) : data => data
   };
@@ -117,13 +121,36 @@ const XRLayer = class extends Layer {
         intensity = apply_contrast_limits(intensity, contrastLimits);
       `;
     }
-    return super.getShaders({
+    let unsignedFs = shaderModule.fs.slice();
+    if (sampler === 'usampler2D') {
+      unsignedFs = unsignedFs.replaceAll(
+        'DECKGL_SAMPLE_TEXTURE',
+        'DECKGL_SAMPLE_UNSIGNED_TEXTURE'
+      );
+    }
+    const extensionDefinesDeckglSampleTexture = this._isHookDefinedByExtensions(
+      'fs:DECKGL_SAMPLE_TEXTURE'
+    );
+    const extensionDefinesDeckglSampleUnsignedTexture = this._isHookDefinedByExtensions(
+      'fs:DECKGL_SAMPLE_UNSIGNED_TEXTURE'
+    );
+    if (!extensionDefinesDeckglSampleTexture) {
+      newChannelsModule.inject['fs:DECKGL_SAMPLE_TEXTURE'] =
+        'intensity = float(texture(channel, texCoord).r);';
+    }
+    if (!extensionDefinesDeckglSampleUnsignedTexture) {
+      newChannelsModule.inject['fs:DECKGL_SAMPLE_UNSIGNED_TEXTURE'] =
+        'intensity = float(texture(channel, texCoord).r);';
+    }
+    const shaders = super.getShaders({
       ...shaderModule,
+      fs: unsignedFs,
       defines: {
         SAMPLER_TYPE: sampler
       },
       modules: [project32, picking, newChannelsModule]
     });
+    return shaders;
   }
 
   _isHookDefinedByExtensions(hookName) {
@@ -167,6 +194,10 @@ const XRLayer = class extends Layer {
     const mutateStr =
       'fs:DECKGL_MUTATE_COLOR(inout vec4 rgba, float intensity0, float intensity1, float intensity2, float intensity3, float intensity4, float intensity5, vec2 vTexCoord)';
     const processStr = `fs:DECKGL_PROCESS_INTENSITY(inout float intensity, vec2 contrastLimits, int channelIndex)`;
+    const sampleUnsignedStr =
+      'fs:DECKGL_SAMPLE_UNSIGNED_TEXTURE(inout float intensity, usampler2D channel, vec2 texCoord)';
+    const sampleStr =
+      'fs:DECKGL_SAMPLE_TEXTURE(inout float intensity, sampler2D channel, vec2 texCoord)';
     // Only initialize shader hook functions _once globally_
     // Since the program manager is shared across all layers, but many layers
     // might be created, this solves the performance issue of always adding new
@@ -177,6 +208,15 @@ const XRLayer = class extends Layer {
     }
     if (!programManager._hookFunctions.includes(processStr)) {
       programManager.addShaderHook(processStr);
+    }
+    if (!programManager._hookFunctions.includes(sampleStr)) {
+      programManager.addShaderHook(sampleStr);
+    }
+    if (
+      !programManager._hookFunctions.includes(sampleUnsignedStr) &&
+      isWebGL2(gl)
+    ) {
+      programManager.addShaderHook(sampleUnsignedStr);
     }
   }
 

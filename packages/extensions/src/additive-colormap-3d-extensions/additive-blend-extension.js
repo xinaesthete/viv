@@ -1,6 +1,10 @@
 import BaseExtension from './base-extension';
 
-const _BEFORE_RENDER = '';
+const _BEFORE_RENDER = `\
+  // Set render coordinate to basically inifnite distance.
+	vec3 backFaceCoord = transformed_eye + t_hit.y * 10. * ray_dir;
+	vec3 renderDepthCoord = backFaceCoord;
+`;
 
 const _RENDER = `\
   float intensityArray[6] = float[6](intensityValue0, intensityValue1, intensityValue2, intensityValue3, intensityValue4, intensityValue5);
@@ -18,13 +22,16 @@ const _RENDER = `\
   val_color.a = 1.0 - pow(1.0 - val_color.a, 1.0);
   color.rgb += (1.0 - color.a) * val_color.a * val_color.rgb;
   color.a += (1.0 - color.a) * val_color.a;
+  renderDepthCoord = p;
   if (color.a >= 0.95) {
     break;
   }
   p += ray_dir * dt;
 `;
 
-const _AFTER_RENDER = '';
+const _AFTER_RENDER = `\
+gl_FragDepth = (mvp * vec4(renderDepthCoord, 1.)).z;
+`;
 
 /**
  * This deck.gl extension allows for an additive colormap like viridis or jet to be used for pseudo-coloring channels with Additive Blending in 3D.

@@ -189,15 +189,12 @@ const VolumeLayer = class extends CompositeLayer {
       channelData: { data, width, height, depth },
       id: `XR3DLayer-${0}-${height}-${width}-${0}-${resolution}-${id}`,
       physicalSizeScalingMatrix,
+      resolutionMatrix,
+      dtype,
       parameters: {
         [GL.CULL_FACE]: true,
-        [GL.CULL_FACE_MODE]: GL.FRONT,
-        [GL.DEPTH_TEST]: false,
-        blendFunc: [GL.SRC_ALPHA, GL.ONE],
-        blend: true
-      },
-      resolutionMatrix,
-      dtype
+        [GL.CULL_FACE_MODE]: GL.FRONT
+      }
     });
   }
 };

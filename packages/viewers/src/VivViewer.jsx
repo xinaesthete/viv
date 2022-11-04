@@ -1,6 +1,8 @@
 import * as React from 'react';
 import DeckGL from '@deck.gl/react';
 import { getVivId } from '@vivjs/views';
+import GL from '@luma.gl/constants';
+
 // No need to use the ES6 or React variants.
 import equal from 'fast-deep-equal';
 
@@ -317,6 +319,11 @@ class VivViewerWrapper extends React.PureComponent {
         useDevicePixels={useDevicePixels}
         getCursor={({ isDragging }) => {
           return isDragging ? 'grabbing' : 'crosshair';
+        }}
+        parameters={{
+          [GL.DEPTH_TEST]: false,
+          blendFunc: [GL.ONE, GL.ONE_MINUS_SRC_ALPHA],
+          blend: true
         }}
       />
     );

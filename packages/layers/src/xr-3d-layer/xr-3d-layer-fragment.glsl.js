@@ -31,6 +31,7 @@ uniform vec2 contrastLimits[6];
 
 in vec3 vray_dir;
 flat in vec3 transformed_eye;
+flat in mat4 mvp;
 out vec4 color;
 
 vec2 intersect_box(vec3 orig, vec3 dir) {

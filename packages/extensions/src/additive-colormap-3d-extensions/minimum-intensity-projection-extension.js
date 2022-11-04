@@ -2,6 +2,9 @@ import BaseExtension from './base-extension';
 
 const _BEFORE_RENDER = `\
   float minVals[6] = float[6](1. / 0., 1. / 0., 1. / 0., 1. / 0., 1. / 0., 1. / 0.);
+  // Set render coordinate to basically inifnite distance.
+	vec3 backFaceCoord = transformed_eye + t_hit.y * 10. * ray_dir;
+	vec3 renderDepthCoord = backFaceCoord;
 `;
 
 const _RENDER = `\
@@ -10,6 +13,7 @@ const _RENDER = `\
   for(int i = 0; i < 6; i++) {
     if(intensityArray[i] < minVals[i]) {
       minVals[i] = intensityArray[i];
+      renderDepthCoord = p;
     }
   }
 `;
@@ -22,6 +26,7 @@ const _AFTER_RENDER = `\
   // Do not go past 1 in opacity/colormap value.
   total = min(total, 1.0);
   color = colormap(total, total);
+  gl_FragDepth = (mvp * vec4(renderDepthCoord, 1.)).z;
 `;
 
 /**

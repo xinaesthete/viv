@@ -7,8 +7,6 @@ import { get3DExtension } from '../../../utils';
 export function get3DExtensionOverride(colormap, renderingMode, shaderCode) {
   const ext = get3DExtension(colormap, renderingMode);
   ext.rendering._AFTER_RENDER = shaderCode._AFTER_RENDER;
-  // eslint-disable-next-line no-console
-  console.log(ext);
   return ext;
 }
 

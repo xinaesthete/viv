@@ -20,6 +20,7 @@ import ZoomLockToggle from './components/ZoomLockToggle';
 import SideBySideToggle from './components/SideBySideToggle';
 import PictureInPictureToggle from './components/PictureInPictureToggle';
 import CameraOptions from './components/CameraOptions';
+import ShaderEdit from './components/ShaderEdit';
 import {
   useChannelsStore,
   useViewerStore,
@@ -228,6 +229,7 @@ const Controller = () => {
           <PanLockToggle />
         </>
       )}
+      <ShaderEdit />
     </Menu>
   );
 };

@@ -80,6 +80,9 @@ export const useImage = (source, history) => {
       }
     }
     if (source) changeLoader();
+    return () => {
+      console.warn('useEffect in useImage should cleanup.');
+    };
   }, [source, history]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     const changeSettings = async () => {
@@ -164,6 +167,9 @@ export const useImage = (source, history) => {
       });
     };
     if (metadata) changeSettings();
+    return () => {
+      console.warn('second useEffect in useImage should cleanup...');
+    };
   }, [loader, metadata]); // eslint-disable-line react-hooks/exhaustive-deps
 };
 

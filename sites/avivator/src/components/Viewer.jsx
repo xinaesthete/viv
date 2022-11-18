@@ -16,16 +16,9 @@ import {
   useLoader,
   useShaderCode
 } from '../state';
-import { useWindowSize, get3DExtension } from '../utils';
+import { useWindowSize } from '../utils';
 import { DEFAULT_OVERVIEW } from '../constants';
-
-function get3DExtensionOverride(colormap, renderingMode, shaderCode) {
-  const ext = get3DExtension(colormap, renderingMode);
-  ext.rendering._AFTER_RENDER = shaderCode._AFTER_RENDER;
-  // eslint-disable-next-line no-console
-  console.log(ext);
-  return ext;
-}
+import { get3DExtensionOverride } from './Controller/components/ShaderEdit';
 
 
 const Viewer = () => {

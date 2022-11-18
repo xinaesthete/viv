@@ -321,7 +321,7 @@ class VivViewerWrapper extends React.PureComponent {
           return isDragging ? 'grabbing' : 'crosshair';
         }}
         parameters={{
-          [GL.DEPTH_TEST]: false,
+          [GL.DEPTH_TEST]: true,
           blendFunc: [GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA],
           blend: true
         }}

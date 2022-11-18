@@ -1,10 +1,12 @@
 import { CompositeLayer, COORDINATE_SYSTEM } from '@deck.gl/core';
-import { LineLayer, TextLayer } from '@deck.gl/layers';
+import { LineLayer, TextLayer, ScatterplotLayer } from '@deck.gl/layers';
 
 import { DEFAULT_FONT_FAMILY } from '@vivjs/constants';
 
 import { range } from './utils';
-
+const randData = new Array(2000).fill().map((_, i) => {
+  return [ Math.random(), Math.random(), Math.random() ];
+});
 const defaultProps = {
   pickable: { type: 'boolean', value: true, compare: true },
   viewState: {
@@ -49,6 +51,10 @@ const AxesLayer3D = class extends CompositeLayer {
               [0, 0, 0].map((i, j) => (j === index ? shape[index] : i))
             ]
           ],
+          parameters: {
+            depthTest: true,
+            depthWrite: true,
+          },
           getSourcePosition: d => d[0],
           getTargetPosition: d => d[1],
           getWidth: 2,
@@ -72,6 +78,10 @@ const AxesLayer3D = class extends CompositeLayer {
               )
             }
           ],
+          parameters: {
+            depthTest: true,
+            depthWrite: true
+          },
           getColor: [0, 0, 0, 255].map((i, j) => (j === index ? 255 : i)),
           getSize: shape[index] * 0.05,
           fontFamily: DEFAULT_FONT_FAMILY,
@@ -88,7 +98,22 @@ const AxesLayer3D = class extends CompositeLayer {
           ]
         })
     );
-    return [...textLayers, ...axisLineLayers];
+    const data = randData.map(v => {
+      const position = v.map((v, i) => v*shape[i]);
+      const color = v.map(v => 80+v*100);
+      return {position, color};
+    });
+    const scatterLayer = new ScatterplotLayer({
+      data,
+      radiusScale: 10,
+      billboard: true,
+      parameters: {
+        depthTest: true,
+        depthWrite: true,
+      },
+      getFillColor: d => d.color
+    });
+    return [...textLayers, ...axisLineLayers, scatterLayer];
   }
 };
 

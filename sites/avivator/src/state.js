@@ -164,3 +164,14 @@ export const useMetadata = () => {
   const metadata = useViewerStore(store => store.metadata);
   return Array.isArray(metadata) ? metadata[image] : metadata;
 };
+
+export const useShaderCode = create(set => ({
+  _AFTER_RENDER: "gl_FragDepth = (mvp * vec4(renderDepthCoord, 1.0)).z;",
+  EDIT_ID: 0,
+  setAfterRender: (code) => {
+    set(state => {
+      state._AFTER_RENDER = code;
+      state.EDIT_ID = state.EDIT_ID + 1;
+    });
+  }
+}));

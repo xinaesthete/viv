@@ -13,10 +13,20 @@ import {
   useImageSettingsStore,
   useViewerStore,
   useChannelsStore,
-  useLoader
+  useLoader,
+  useShaderCode
 } from '../state';
 import { useWindowSize, get3DExtension } from '../utils';
 import { DEFAULT_OVERVIEW } from '../constants';
+
+function get3DExtensionOverride(colormap, renderingMode, shaderCode) {
+  const ext = get3DExtension(colormap, renderingMode);
+  ext.rendering._AFTER_RENDER = shaderCode._AFTER_RENDER;
+  // eslint-disable-next-line no-console
+  console.log(ext);
+  return ext;
+}
+
 
 const Viewer = () => {
   const [useLinkedView, use3d, viewState] = useViewerStore(
@@ -72,6 +82,7 @@ const Viewer = () => {
     const z = Math.min(Math.max(Math.round(-zoom), 0), loader.length - 1);
     useViewerStore.setState({ pyramidResolution: z });
   };
+  const shaderCode = useShaderCode();
 
   return use3d ? (
     <VolumeViewer
@@ -85,7 +96,7 @@ const Viewer = () => {
       ySlice={ySlice}
       zSlice={zSlice}
       resolution={resolution}
-      extensions={[get3DExtension(colormap, renderingMode)]}
+      extensions={[get3DExtensionOverride(colormap, renderingMode, shaderCode)]}
       height={viewSize.height}
       width={viewSize.width}
       onViewportLoad={onViewportLoad}

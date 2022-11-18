@@ -322,7 +322,7 @@ class VivViewerWrapper extends React.PureComponent {
         }}
         parameters={{
           [GL.DEPTH_TEST]: false,
-          blendFunc: [GL.ONE, GL.ONE_MINUS_SRC_ALPHA],
+          blendFunc: [GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA],
           blend: true
         }}
       />

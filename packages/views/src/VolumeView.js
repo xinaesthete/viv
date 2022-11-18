@@ -45,6 +45,12 @@ export default class VolumeView extends VivView {
     const { id, height, width } = this;
     const layerViewState = viewStates[id];
     const layers = [];
+    layers.push(
+      new VolumeLayer(props, {
+        id: `${loader.type}${getVivId(id)}`
+      })
+    );
+
 
     const source = loader[0];
     const { labels, shape } = source;
@@ -79,12 +85,6 @@ export default class VolumeView extends VivView {
         })
       );
     }
-
-    layers.push(
-      new VolumeLayer(props, {
-        id: `${loader.type}${getVivId(id)}`
-      })
-    );
 
     return layers;
   }

@@ -4,7 +4,6 @@ import Grid from '@material-ui/core/Grid';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Divider from '@material-ui/core/Divider';
-import {TextareaAutosize} from '@material-ui/core';
 import shallow from 'zustand/shallow';
 
 import ChannelController from './components/ChannelController';
@@ -26,8 +25,7 @@ import {
   useViewerStore,
   useImageSettingsStore,
   useLoader,
-  useMetadata,
-  useShaderCode
+  useMetadata
 } from '../../state';
 import { guessRgb, useWindowSize, getSingleSelectionStats } from '../../utils';
 import { GLOBAL_SLIDER_DIMENSION_FIELDS } from '../../constants';
@@ -177,7 +175,6 @@ const Controller = () => {
     ) : null;
   });
   const [tab, setTab] = useState(0);
-  const shaderCode = useShaderCode();
 
   const handleTabChange = (event, newTab) => {
     setTab(newTab);
@@ -231,17 +228,6 @@ const Controller = () => {
           <PanLockToggle />
         </>
       )}
-      <h2>_AFTER_RENDER glsl:</h2>
-      <TextareaAutosize style={{backgroundColor: '#111', color: '#ccc', width: '100%', fontSize: '10px' }}
-        defaultValue={shaderCode._AFTER_RENDER}
-        onChange={e => shaderCode.setAfterRender(e.target.value)}
-        />
-      <button
-      onClick={()=>{
-        //TODO...
-        console.warn('choose a different blending option to force shader update');
-      }}
-      >apply</button>
     </Menu>
   );
 };

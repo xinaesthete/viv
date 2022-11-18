@@ -7,6 +7,7 @@ import Viewer from './components/Viewer';
 import Controller from './components/Controller';
 import DropzoneWrapper from './components/DropzoneWrapper';
 import Footer from './components/Footer';
+import ShaderEdit from './components/Controller/components/ShaderEdit';
 
 import './index.css';
 
@@ -35,6 +36,7 @@ export default function Avivator(props) {
       <DropzoneWrapper>{!isViewerLoading && <Viewer />}</DropzoneWrapper>
       <Controller />
       <SnackBars />
+      <ShaderEdit />
       {!useLinkedView && <Footer />}
     </>
   );

@@ -1,12 +1,40 @@
-import { CompositeLayer, COORDINATE_SYSTEM } from '@deck.gl/core';
+import { CompositeLayer, COORDINATE_SYSTEM, LayerExtension } from '@deck.gl/core';
 import { LineLayer, TextLayer, ScatterplotLayer } from '@deck.gl/layers';
 
 import { DEFAULT_FONT_FAMILY } from '@vivjs/constants';
 
 import { range } from './utils';
-const randData = new Array(2000).fill().map((_, i) => {
+const randData = new Array(100).fill().map((_, i) => {
   return [ Math.random(), Math.random(), Math.random() ];
 });
+class DepthVisExtension extends LayerExtension {
+  getShaders() {
+    return {
+      inject: {
+        'fs:#decl': `
+        const bool visualiseDepth = true;
+        const vec2 depthContrastLimits = vec2(0.6, 1.);
+        float linear_to_srgb(float x) {
+          if (x <= 0.0031308) {
+            return 12.92 * x;
+          }
+          return 1.055 * pow(x, 1. / 2.4) - 0.055;
+        }
+        `,
+        'fs:DECKGL_FILTER_COLOR': `
+        if (visualiseDepth) {
+          float d = gl_FragCoord.z;// / gl_FragCoord.w;
+          vec2 lim = depthContrastLimits;
+          d = (d - lim[0]) / max(0.0005, lim[1] - lim[0]);
+          d = linear_to_srgb(d);
+          color.rgb = vec3(d);
+        }
+        `
+      }
+    };
+  }
+}
+
 const defaultProps = {
   pickable: { type: 'boolean', value: true, compare: true },
   viewState: {
@@ -100,13 +128,14 @@ const AxesLayer3D = class extends CompositeLayer {
     );
     const data = randData.map(v => {
       const position = v.map((v, i) => v*shape[i]);
-      const color = v.map(v => 80+v*100);
+      const color = v.map((v, i) => v*(i%3 == 2 ? 255 : 100));
       return {position, color};
     });
     const scatterLayer = new ScatterplotLayer({
       data,
-      radiusScale: 10,
-      billboard: true,
+      radiusScale: 100,
+      billboard: false,
+      extensions: [new DepthVisExtension()],
       parameters: {
         depthTest: true,
         depthWrite: true,

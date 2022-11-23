@@ -105,6 +105,8 @@ function getRenderingFromExtensions(extensions) {
       'XR3DLayer requires at least one extension to define opts.rendering as an object with _RENDER as a property at the minimum.'
     );
   }
+  //TODO more standard 'fs:#decl' injection.
+  if (!rendering._FS_DECL) rendering._FS_DECL = '//// no extra declarations in extension';
   return rendering;
 }
 
@@ -166,7 +168,7 @@ const XR3DLayer = class extends Layer {
   getShaders() {
     const { clippingPlanes, extensions } = this.props;
     const { sampler } = getRenderingAttrs();
-    const { _BEFORE_RENDER, _RENDER, _AFTER_RENDER } =
+    const { _BEFORE_RENDER, _RENDER, _AFTER_RENDER, _FS_DECL } =
       getRenderingFromExtensions(extensions);
     const extensionDefinesDeckglProcessIntensity =
       this._isHookDefinedByExtensions('fs:DECKGL_PROCESS_INTENSITY');
@@ -179,6 +181,7 @@ const XR3DLayer = class extends Layer {
     return super.getShaders({
       vs,
       fs: fs
+        .replace('_FS_DECL', _FS_DECL)
         .replace('_BEFORE_RENDER', _BEFORE_RENDER)
         .replace('_RENDER', _RENDER)
         .replace('_AFTER_RENDER', _AFTER_RENDER),

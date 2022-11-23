@@ -24,7 +24,10 @@ const _AFTER_RENDER = `\
     rgbCombo += max(0.0, min(1.0, maxVals[i])) * vec3(colors[i]);
   }
   color = vec4(rgbCombo, 1.0);
-  gl_FragDepth = (mvp * renderDepthCoord).z / (mvp * renderDepthCoord).w;
+  if (color.a < 1./256.) discard;
+  vec4 _p = mvp * renderDepthCoord;
+  float depth = _p.z / _p.w;
+  gl_FragDepth = (depth + 1.)/2.;
 `;
 
 /**

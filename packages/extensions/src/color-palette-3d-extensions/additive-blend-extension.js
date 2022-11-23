@@ -30,8 +30,10 @@ const _RENDER = `\
 `;
 
 const _AFTER_RENDER = `\
-gl_FragDepth = (mvp * renderDepthCoord).z / (mvp * renderDepthCoord).w;
 if (color.a < 1./256.) discard;
+vec4 _p = mvp * renderDepthCoord;
+float depth = _p.z / _p.w;
+gl_FragDepth = (depth + 1.)/2.;
 `;
 
 /**

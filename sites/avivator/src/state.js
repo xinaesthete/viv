@@ -170,7 +170,8 @@ export const useShaderCode = create(set => ({
   _AFTER_RENDER: `
 if (color.a < 1./256.) discard;
 vec4 _p = mvp * renderDepthCoord;
-gl_FragDepth = _p.z / _p.w;
+float depth = _p.z / _p.w;
+gl_FragDepth = (depth + 1.)/2.;
   `,
   EDIT_ID: 0,
   setAfterRender: (code) => {

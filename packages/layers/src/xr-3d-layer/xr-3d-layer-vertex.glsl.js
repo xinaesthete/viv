@@ -20,7 +20,7 @@ uniform mat4 resolution;
 
 
 out vec3 vray_dir;
-flat out vec4 transformed_eye;
+flat out vec3 transformed_eye;
 flat out mat4 mvp;
 
 void main() {
@@ -67,9 +67,9 @@ void main() {
   /
  #
   */
-  transformed_eye = (inverse(resolution) * inverse(scale) * inverse(model) * (vec4(eye_pos, 1.)));
+  transformed_eye = (inverse(resolution) * inverse(scale) * inverse(model) * (vec4(eye_pos, 1.))).xyz;
 
   // Step 3: Rays are from eye to vertices so that they get interpolated over the fragments.
-  vray_dir = positions - transformed_eye.xyz;
+  vray_dir = positions - transformed_eye;
 }
 `;

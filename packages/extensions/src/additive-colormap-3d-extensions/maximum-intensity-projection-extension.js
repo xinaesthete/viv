@@ -3,8 +3,8 @@ import BaseExtension from './base-extension';
 const _BEFORE_RENDER = `\
   float maxVals[6] = float[6](-1.0, -1.0, -1.0, -1.0, -1.0, -1.0);
   // Set render coordinate to basically inifnite distance.
-	vec4 backFaceCoord = transformed_eye + t_hit.y * 10. * ray_dir;
-	vec4 renderDepthCoord = backFaceCoord;
+	vec3 backFaceCoord = transformed_eye + t_hit.y * 10. * ray_dir;
+	vec3 renderDepthCoord = backFaceCoord;
 `;
 
 const _RENDER = `\
@@ -27,7 +27,7 @@ const _AFTER_RENDER = `\
   total = min(total, 1.0);
   color = colormap(total, total);
   if (color.a < 1./256.) discard;
-  vec4 _p = mvp * renderDepthCoord;
+  vec4 _p = mvp * vec4(renderDepthCoord, 1.);
   float depth = _p.z / _p.w;
   gl_FragDepth = (depth + 1.)/2.;
 `;

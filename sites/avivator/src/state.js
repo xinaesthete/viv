@@ -169,7 +169,7 @@ export const useShaderCode = create(set => ({
   // _AFTER_RENDER: "gl_FragDepth = (mvp * vec4(renderDepthCoord, 1.0)).z;",
   _AFTER_RENDER: `
 if (color.a < 1./256.) discard;
-vec4 _p = mvp * renderDepthCoord;
+vec4 _p = mvp * vec4(renderDepthCoord, 1.);
 float depth = _p.z / _p.w;
 gl_FragDepth = (depth + 1.)/2.;
   `,
@@ -178,13 +178,6 @@ gl_FragDepth = (depth + 1.)/2.;
     set(state => {
       state._AFTER_RENDER = code;
       state.EDIT_ID = state.EDIT_ID + 1;
-    });
-  },
-  setFromExtension: (extension) => {
-    set(state => {
-      state._BEFORE_RENDER = extension._BEFORE_RENDER;
-      state._RENDER = extension._RENDER;
-      state._AFTER_RENDER = extension._AFTER_RENDER;
     });
   }
 }));

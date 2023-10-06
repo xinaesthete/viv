@@ -173,11 +173,25 @@ vec4 _p = mvp * vec4(renderDepthCoord, 1.);
 float depth = _p.z / _p.w;
 gl_FragDepth = (depth + 1.)/2.;
   `,
+  inject: {
+    'fs:DECKGL_PROCESS_INTENSITY': 'intensity = apply_contrast_limits(intensity, contrastLimits);',
+  },
   EDIT_ID: 0,
   setAfterRender: (code) => {
     set(state => {
       state._AFTER_RENDER = code;
       state.EDIT_ID = state.EDIT_ID + 1;
     });
-  }
+  },
+  setCodeForHook: (hook, code) => {
+    set(state => {
+      //todo localstorage...
+      state.inject[hook] = `
+      /// User code for '${hook}' ${state.EDIT_ID} ------
+      ${code}
+      /// End user code for '${hook}' ${state.EDIT_ID} ------
+      `;
+      state.EDIT_ID = state.EDIT_ID + 1;
+    });
+  },
 }));

@@ -44,8 +44,43 @@ export class DepthVisExtension extends LayerExtension {
   }
 }
 
-export default function ShaderEdit() {
+/// this probably shouldn't be trying to extend LensExtension,
+// should it be an extra LayerExtension that goes alongside...
+// nb, the actual error wrong thing that happens internally is:
+// layer.ts:778   _initialize() {
+//   assert(!this.internalState); // finalized layer cannot be reused
+let shaderCodeGlobal; //hack
+export class DynamicShaderExtension extends LayerExtension {
+  //shaderCode is a bad name, it's shaderInjections or something
+  constructor(shaderCode) {
+    super();
+    this.shaderCode = shaderCode;
+    shaderCodeGlobal = shaderCode;
+  }
+  getShaders() {
+    const { inject } = shaderCodeGlobal; //'this' is not what it seems
+    return { inject };
+  }
+  // todo updateState
+}
+
+function ShaderCodeBlock({ hookName, docText, apply }) {
   const shaderCode = useShaderCode();
+  return (
+    <details>
+      <summary>{hookName}</summary>
+      <code>{docText}</code>
+      <TextareaAutosize style={{ backgroundColor: '#111', color: '#ccc', width: '100%', fontSize: '10px' }}
+        defaultValue={shaderCode.inject[hookName]}
+        onChange={e => shaderCode.setCodeForHook(hookName, e.target.value)}
+        onKeyDown={e => { if (e.key === 'Enter' && e.ctrlKey) apply(); }}
+      />
+    </details>
+  );
+}
+
+export default function ShaderEdit() {
+  //const shaderCode = useShaderCode();
   const renderingMode = useImageSettingsStore(store => store.renderingMode);
   const renderingOptions = Object.values(RENDERING_MODES);
 
@@ -60,12 +95,9 @@ export default function ShaderEdit() {
 
   return (
     <div style={{maxWidth: '30em'}}>
-      <h2 style={{color: 'white'}}>_AFTER_RENDER glsl:</h2>
-      <TextareaAutosize style={{ backgroundColor: '#111', color: '#ccc', width: '100%', fontSize: '10px' }}
-        defaultValue={shaderCode._AFTER_RENDER}
-        onChange={e => shaderCode.setAfterRender(e.target.value)}
-        onKeyDown={e => { if (e.key === 'Enter' && e.ctrlKey) apply(); }}
-      />
+      {/* <ShaderCodeBlock hookName="_AFTER_RENDER" apply={apply} /> */}
+      <ShaderCodeBlock hookName="fs:#decl" apply={apply} />
+      <ShaderCodeBlock hookName="fs:DECKGL_PROCESS_INTENSITY" apply={apply} doc="inout float intensity, vec2 contrastLimits, int channelIndex"/>
       <button
         onClick={apply}
       >apply</button>

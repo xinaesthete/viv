@@ -18,7 +18,7 @@ import {
 } from '../state';
 import { useWindowSize } from '../utils';
 import { DEFAULT_OVERVIEW } from '../constants';
-import { get3DExtensionOverride } from './Controller/components/ShaderEdit';
+import { DynamicShaderExtension, get3DExtensionOverride } from './Controller/components/ShaderEdit';
 
 
 const Viewer = () => {
@@ -122,7 +122,8 @@ const Viewer = () => {
       lensEnabled={lensEnabled}
       onViewportLoad={onViewportLoad}
       extensions={[
-        colormap ? new AdditiveColormapExtension() : new LensExtension()
+        colormap ? new AdditiveColormapExtension() : new LensExtension(),
+        new DynamicShaderExtension(shaderCode)
       ]}
       colormap={colormap || 'viridis'}
     />
@@ -138,13 +139,15 @@ const Viewer = () => {
       overview={DEFAULT_OVERVIEW}
       overviewOn={isOverviewOn}
       hoverHooks={{
+        //TODO: something to feed this into my shader extension uniform...
         handleValue: v => useViewerStore.setState({ pixelValues: v })
       }}
       lensSelection={lensSelection}
       lensEnabled={lensEnabled}
       onViewportLoad={onViewportLoad}
       extensions={[
-        colormap ? new AdditiveColormapExtension() : new LensExtension()
+        colormap ? new AdditiveColormapExtension() : new LensExtension(),
+        new DynamicShaderExtension(shaderCode)
       ]}
       colormap={colormap || 'viridis'}
       onViewStateChange={onViewStateChange}

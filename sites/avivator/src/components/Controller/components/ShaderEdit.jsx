@@ -61,7 +61,20 @@ export class DynamicShaderExtension extends LayerExtension {
     const { inject } = shaderCodeGlobal; //'this' is not what it seems
     return { inject };
   }
-  // todo updateState
+  // todo less hardcoding / ability to add sliders / potentially animation...
+  updateState(params) {
+    // pixelValues -> uniforms...xx
+    const { pixelValues = [160.0, 20.0, 20.0, 20.0, 0, 0], intensityPower = 1, contrastLimits } = params.props;
+    // a bit garbage, but working around contrastLimits uniform being declared too late for us to use it in the our injected hooks
+    const pixValsNormalized = pixelValues.map((v, i) => {
+      const limits = contrastLimits[i];
+      if (!limits) return 0; //assert - shouldn't happen
+      return (v - limits[0]) / (limits[1] - limits[0]);
+    });
+    const intensityContourWidth = 0.01;
+    const afFactor = 0.0001;
+    for (const model of this.getModels()) model.setUniforms({ pixelValues, intensityPower, intensityContourWidth, afFactor, pixValsNormalized });
+  }
 }
 
 function ShaderCodeBlock({ hookName, docText, apply }) {
@@ -98,6 +111,7 @@ export default function ShaderEdit() {
       {/* <ShaderCodeBlock hookName="_AFTER_RENDER" apply={apply} /> */}
       <ShaderCodeBlock hookName="fs:#decl" apply={apply} />
       <ShaderCodeBlock hookName="fs:DECKGL_PROCESS_INTENSITY" apply={apply} doc="inout float intensity, vec2 contrastLimits, int channelIndex"/>
+      <ShaderCodeBlock hookName="fs:DECKGL_MUTATE_COLOR" apply={apply} />
       <button
         onClick={apply}
       >apply</button>

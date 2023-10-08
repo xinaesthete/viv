@@ -22,8 +22,8 @@ import { DynamicShaderExtension, get3DExtensionOverride } from './Controller/com
 
 
 const Viewer = () => {
-  const [useLinkedView, use3d, viewState] = useViewerStore(
-    store => [store.useLinkedView, store.use3d, store.viewState],
+  const [useLinkedView, use3d, viewState, pixelValues] = useViewerStore(
+    store => [store.useLinkedView, store.use3d, store.viewState, store.pixelValues],
     shallow
   );
   const [colors, contrastLimits, channelsVisible, selections] =
@@ -126,6 +126,7 @@ const Viewer = () => {
         new DynamicShaderExtension(shaderCode)
       ]}
       colormap={colormap || 'viridis'}
+      pixelValues={pixelValues}
     />
   ) : (
     <PictureInPictureViewer
@@ -150,6 +151,7 @@ const Viewer = () => {
         new DynamicShaderExtension(shaderCode)
       ]}
       colormap={colormap || 'viridis'}
+      pixelValues={pixelValues}
       onViewStateChange={onViewStateChange}
     />
   );

@@ -70,6 +70,8 @@ const PictureInPictureViewer = props => {
     onHover,
     onViewportLoad,
     extensions = [new ColorPaletteExtension()],
+    pixelValues = [0, 0, 0, 0, 0, 0],
+    intensityPower = 1,
     deckProps
   } = props;
   const detailViewState = viewStatesProp?.find(v => v.id === DETAIL_VIEW_ID);
@@ -100,7 +102,9 @@ const PictureInPictureViewer = props => {
     lensBorderColor,
     lensBorderRadius,
     extensions,
-    transparentColor
+    transparentColor,
+    pixelValues,
+    intensityPower
   };
   const views = [detailView];
   const layerProps = [layerConfig];

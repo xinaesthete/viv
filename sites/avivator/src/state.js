@@ -174,7 +174,29 @@ float depth = _p.z / _p.w;
 gl_FragDepth = (depth + 1.)/2.;
   `,
   inject: {
-    'fs:DECKGL_PROCESS_INTENSITY': 'intensity = apply_contrast_limits(intensity, contrastLimits);',
+    'fs:DECKGL_PROCESS_INTENSITY': `
+// inout float intensity, vec2 contrastLimits, int channelIndex
+intensity = apply_contrast_limits(intensity, contrastLimits);
+`,
+'fs:#decl': `
+uniform float pixelValues[6];
+uniform float pixValsNormalized[6];
+
+float contour(float v, int i) {
+  float d = abs(v - pixValsNormalized[i]);
+  return smoothstep(0.05, 0.0, d);
+}
+`,
+'fs:DECKGL_MUTATE_COLOR': `
+float c = 1.0;
+int i = 0;
+c *= contour(intensity0, i++);
+c *= contour(intensity1, i++);
+c *= contour(intensity2, i++);
+c *= contour(intensity3, i++);
+
+rgba = mix(rgba, vec4(1.0), c);
+`
   },
   EDIT_ID: 0,
   setAfterRender: (code) => {
@@ -187,9 +209,9 @@ gl_FragDepth = (depth + 1.)/2.;
     set(state => {
       //todo localstorage...
       state.inject[hook] = `
-      /// User code for '${hook}' ${state.EDIT_ID} ------
+      /// [[[  CODE FOR '${hook}' #${state.EDIT_ID} ]]] ------
       ${code}
-      /// End user code for '${hook}' ${state.EDIT_ID} ------
+      /// [[[ /CODE FOR '${hook}' #${state.EDIT_ID} ]]] ------
       `;
       state.EDIT_ID = state.EDIT_ID + 1;
     });

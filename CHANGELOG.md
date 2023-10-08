@@ -4,7 +4,54 @@
 
 ### Added
 
+### Changed
+- Bump `gl` to v6 and move to Node.js 18 in CI.
+
+## 0.13.8
+
+### Added
+- Added ScaleBarLayer snapping feature. Will convert scale value to one of `[1, 2, 3, 4, 5, 10, 20, 25, 50, 100, 200, 250, 500]` and adjust units accordingly, rescaling the length of the bar in pixels to match. Use `snap: true` prop to enable.
+
+### Changed
+- Fixed typo in `sites/docs/src/IMAGE_RENDERING.md`
+
+## 0.13.7
+
+### Changed
+- Fixed `click` event not firing on Overview panel
+- Fixed `zoom` in `getDefaultInitialViewState`
+### Added
+
+### Changed
+- Fix `Float64` reversion from the fix in 0.12.8
+
+## 0.13.6
+
+### Added
+
+- Max/Min Option per channel in Avivator.
+
+### Changed
+
+- Issue cloudfront invalidation on deployment.
+- Fixed typos in README
+- Fix loading of omengff `multiscales` by allowing loading `labels` from new `axes` metadata
+
+## 0.13.5
+
+### Added
+
+### Changed
+
+- Fix Avivator to not require `Color` attribute.
+
+## 0.13.4
+
+### Added
+
 - Added support for loading local TIFFs using GeoTIFF's `fromFile` loader.
+- Added `Color` attribute support for `Channel` meta-tag.
+- Run tests only on ubuntu 20 in CI to prevent WebGL context creation failures.
 
 ### Changed
 

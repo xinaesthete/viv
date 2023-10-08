@@ -34,7 +34,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '18.x'
 
       - uses: pnpm/action-setup@v2.0.1
         name: Install pnpm
@@ -47,7 +47,7 @@ jobs:
         run: pnpm --filter=avivator build
 
   test-linux:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     env:
       DISPLAY: :0
     steps:
@@ -56,7 +56,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '18.x'
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2.0.1
@@ -95,7 +95,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '18.x'
           registry-url: https://registry.npmjs.org
 
       - name: Install pnpm
@@ -121,4 +121,4 @@ jobs:
         run: |
           aws s3 cp --recursive sites/avivator/dist s3://avivator.gehlenborglab.org
           aws s3 cp --recursive sites/docs/dist s3://viv.gehlenborglab.org
-
+          aws cloudfront create-invalidation --distribution-id  E204VEQ9XF37EF --paths "/*"

@@ -127,6 +127,7 @@ const Viewer = () => {
       ]}
       colormap={colormap || 'viridis'}
       pixelValues={pixelValues}
+      snapScaleBar
     />
   ) : (
     <PictureInPictureViewer
@@ -153,6 +154,7 @@ const Viewer = () => {
       colormap={colormap || 'viridis'}
       pixelValues={pixelValues}
       onViewStateChange={onViewStateChange}
+      snapScaleBar
     />
   );
 };

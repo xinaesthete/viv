@@ -25,7 +25,8 @@ import {
   useViewerStore,
   useImageSettingsStore,
   useLoader,
-  useMetadata
+  useMetadata,
+  useImageSettingsStoreApi
 } from '../../state';
 import { guessRgb, useWindowSize, getSingleSelectionStats } from '../../utils';
 import { GLOBAL_SLIDER_DIMENSION_FIELDS } from '../../constants';
@@ -108,6 +109,7 @@ const Controller = () => {
   const globalControlLabels = labels.filter(label =>
     GLOBAL_SLIDER_DIMENSION_FIELDS.includes(label)
   );
+  const imageSettingsStore = useImageSettingsStoreApi();
   const channelControllers = ids.map((id, i) => {
     const onSelectionChange = e => {
       const selection = {
@@ -124,9 +126,9 @@ const Controller = () => {
           contrastLimits: newContrastLimit,
           domains: domain
         });
-        useImageSettingsStore.setState({
+        imageSettingsStore.setState({
           onViewportLoad: () => {
-            useImageSettingsStore.setState({ onViewportLoad: () => {} });
+            imageSettingsStore.setState({ onViewportLoad: () => {} });
             setIsChannelLoading(i, false);
           }
         });

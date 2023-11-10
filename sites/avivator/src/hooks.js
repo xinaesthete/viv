@@ -1,15 +1,17 @@
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { useDropzone as useReactDropzone } from 'react-dropzone';
 import shallow from 'zustand/shallow';
 // eslint-disable-next-line camelcase
 import { unstable_batchedUpdates } from 'react-dom';
 
 import {
-  useChannelsStore,
   useImageSettingsStore,
   useLoader,
   useMetadata,
-  useViewerStore
+  useViewerStore,
+  useViewerStoreApi,
+  useChannelsStoreApi,
+  useImageSettingsStoreApi,
 } from './state';
 import {
   createLoader,
@@ -32,18 +34,22 @@ export const useImage = (source, history) => {
   );
   const loader = useLoader();
   const metadata = useMetadata();
+  // const { viewerStore, channelsStore, imageSettingsStore } = useContext(AvivatorContext);
+  const viewerStore = useViewerStoreApi();
+  const channelsStore = useChannelsStoreApi();
+  const imageSettingsStore = useImageSettingsStoreApi();
   useEffect(() => {
     async function changeLoader() {
       // Placeholder
-      useViewerStore.setState({ isChannelLoading: [true] });
-      useViewerStore.setState({ isViewerLoading: true });
+      viewerStore.setState({ isChannelLoading: [true] });
+      viewerStore.setState({ isViewerLoading: true });
       if (use3d) toggleUse3d();
       const { urlOrFile } = source;
       const newLoader = await createLoader(
         urlOrFile,
         toggleIsOffsetsSnackbarOn,
         message =>
-          useViewerStore.setState({
+          viewerStore.setState({
             loaderErrorSnackbar: { on: true, message }
           })
       );
@@ -67,8 +73,8 @@ export const useImage = (source, history) => {
           nextMeta
         );
         unstable_batchedUpdates(() => {
-          useChannelsStore.setState({ loader: nextLoader });
-          useViewerStore.setState({
+          channelsStore.setState({ loader: nextLoader });
+          viewerStore.setState({
             metadata: nextMeta
           });
         });
@@ -84,8 +90,8 @@ export const useImage = (source, history) => {
   useEffect(() => {
     const changeSettings = async () => {
       // Placeholder
-      useViewerStore.setState({ isChannelLoading: [true] });
-      useViewerStore.setState({ isViewerLoading: true });
+      viewerStore.setState({ isChannelLoading: [true] });
+      viewerStore.setState({ isViewerLoading: true });
       if (use3d) toggleUse3d();
       const newSelections = buildDefaultSelection(loader[0]);
       const { Channels } = metadata.Pixels;
@@ -121,7 +127,7 @@ export const useImage = (source, history) => {
         if (lensEnabled) {
           toggleLensEnabled();
         }
-        useViewerStore.setState({ useColormap: false, useLens: false });
+        viewerStore.setState({ useColormap: false, useLens: false });
       } else {
         const stats = await getMultiSelectionStats({
           loader,
@@ -135,12 +141,12 @@ export const useImage = (source, history) => {
           newDomains.length === 1
             ? [[255, 255, 255]]
             : newDomains.map((_, i) => COLOR_PALLETE[i]);
-        useViewerStore.setState({
+        viewerStore.setState({
           useLens: channelOptions.length !== 1,
           useColormap: true
         });
       }
-      useChannelsStore.setState({
+      channelsStore.setState({
         ids: newDomains.map(() => String(Math.random())),
         selections: newSelections,
         domains: newDomains,
@@ -148,7 +154,7 @@ export const useImage = (source, history) => {
         colors: newColors,
         channelsVisible: newColors.map(() => true)
       });
-      useViewerStore.setState({
+      viewerStore.setState({
         isChannelLoading: newSelections.map(i => !i),
         isViewerLoading: false,
         pixelValues: new Array(newSelections.length).fill(FILL_PIXEL_VALUE),
@@ -157,7 +163,7 @@ export const useImage = (source, history) => {
         channelOptions
       });
       const [xSlice, ySlice, zSlice] = getBoundingCube(loader);
-      useImageSettingsStore.setState({
+      imageSettingsStore.setState({
         xSlice,
         ySlice,
         zSlice
@@ -168,6 +174,7 @@ export const useImage = (source, history) => {
 };
 
 export const useDropzone = () => {
+  const viewerStore = useViewerStoreApi();
   const handleSubmitFile = files => {
     let newSource;
     if (files.length === 1) {
@@ -182,7 +189,7 @@ export const useDropzone = () => {
         description: 'data.zarr'
       };
     }
-    useViewerStore.setState({ source: newSource });
+    viewerStore.setState({ source: newSource });
   };
   return useReactDropzone({
     onDrop: handleSubmitFile

@@ -8,7 +8,8 @@ import {
   useChannelsStore,
   useViewerStore,
   useImageSettingsStore,
-  useLoader
+  useLoader,
+  useImageSettingsStoreApi
 } from '../../../state';
 import { getSingleSelectionStats } from '../../../utils';
 
@@ -39,6 +40,7 @@ const AddChannel = () => {
   );
   const loader = useLoader();
   const { labels } = loader[0];
+  const imageSettingsStore = useImageSettingsStoreApi();
   const handleChannelAdd = useCallback(() => {
     let selection = Object.fromEntries(labels.map(l => [l, 0]));
     selection = { ...selection, ...globalSelection };
@@ -53,9 +55,9 @@ const AddChannel = () => {
         contrastLimits,
         channelsVisible: true
       });
-      useImageSettingsStore.setState({
+      imageSettingsStore.setState({
         onViewportLoad: () => {
-          useImageSettingsStore.setState({ onViewportLoad: () => {} });
+          imageSettingsStore.setState({ onViewportLoad: () => {} });
           setIsChannelLoading(numSelectionsBeforeAdd, false);
         }
       });
@@ -75,7 +77,8 @@ const AddChannel = () => {
     addIsChannelLoading,
     selections,
     setIsChannelLoading,
-    setPropertiesForChannel
+    setPropertiesForChannel,
+    imageSettingsStore
   ]);
   return (
     <Button

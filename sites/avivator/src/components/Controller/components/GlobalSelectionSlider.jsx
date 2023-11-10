@@ -11,7 +11,9 @@ import {
   useChannelsStore,
   useViewerStore,
   useImageSettingsStore,
-  useLoader
+  useLoader,
+  useViewerStoreApi,
+  useImageSettingsStoreApi
 } from '../../../state';
 
 export default function GlobalSelectionSlider(props) {
@@ -22,10 +24,12 @@ export default function GlobalSelectionSlider(props) {
   );
   const loader = useLoader();
   const globalSelection = useViewerStore(store => store.globalSelection);
+  const viewerStore = useViewerStoreApi();
+  const imageSettingsStore = useImageSettingsStoreApi();
   const changeSelection = useCallback(
     debounce(
       (event, newValue) => {
-        useViewerStore.setState({
+        viewerStore.setState({
           isChannelLoading: selections.map(() => true)
         });
         const newSelections = [...selections].map(sel => ({
@@ -46,12 +50,12 @@ export default function GlobalSelectionSlider(props) {
             );
           });
           unstable_batchedUpdates(() => {
-            useImageSettingsStore.setState({
+            imageSettingsStore.setState({
               onViewportLoad: () => {
-                useImageSettingsStore.setState({
+                imageSettingsStore.setState({
                   onViewportLoad: () => {}
                 });
-                useViewerStore.setState({
+                viewerStore.setState({
                   isChannelLoading: selections.map(() => false)
                 });
               }
@@ -67,7 +71,7 @@ export default function GlobalSelectionSlider(props) {
       50,
       { trailing: true }
     ),
-    [loader, selections]
+    [loader, selections, viewerStore, imageSettingsStore, setPropertiesForChannel]
   );
   return (
     <Grid
@@ -83,7 +87,7 @@ export default function GlobalSelectionSlider(props) {
         <Slider
           value={globalSelection[label]}
           onChange={(event, newValue) => {
-            useViewerStore.setState({
+            viewerStore.setState({
               globalSelection: {
                 ...globalSelection,
                 [label]: newValue

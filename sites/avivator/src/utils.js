@@ -156,7 +156,7 @@ export async function createLoader(
         // TODO(2021-05-09): temporarily disable `pool` until inline worker module is fixed.
         const source = await loadOmeTiff(urlOrFile, {
           images: 'all',
-          pool: false
+          // pool: false
         });
         return source;
       }
@@ -168,7 +168,7 @@ export async function createLoader(
       const source = await loadOmeTiff(urlOrFile, {
         offsets,
         images: 'all',
-        pool: false
+        // pool: false
       });
 
       // Show a warning if the total number of channels/images exceeds a fixed amount.

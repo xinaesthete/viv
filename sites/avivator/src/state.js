@@ -184,7 +184,7 @@ uniform float pixValsNormalized[6];
 
 float contour(float v, int i) {
   float d = abs(v - pixValsNormalized[i]);
-  return smoothstep(0.05, 0.0, d);
+  return smoothstep(0.1, 0.0, d);
 }
 `,
 'fs:DECKGL_MUTATE_COLOR': `

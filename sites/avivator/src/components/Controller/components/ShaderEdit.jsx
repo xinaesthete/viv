@@ -71,9 +71,9 @@ export class DynamicShaderExtension extends LayerExtension {
       if (!limits) return 0; //assert - shouldn't happen
       return (v - limits[0]) / (limits[1] - limits[0]);
     });
-    const intensityContourWidth = 0.01;
-    const afFactor = 0.0001;
-    for (const model of this.getModels()) model.setUniforms({ pixelValues, intensityPower, intensityContourWidth, afFactor, pixValsNormalized });
+    const misoWidth = 0.02;
+    const afFactor = .0;
+    for (const model of this.getModels()) model.setUniforms({ pixelValues, intensityPower, misoWidth, afFactor, pixValsNormalized });
   }
 }
 

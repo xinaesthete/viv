@@ -1,12 +1,6 @@
 import {
   EditableGeoJsonLayer,
-  DrawLineStringMode,
   DrawPolygonMode,
-  DrawPolygonByDraggingMode,
-  ModifyMode,
-  // TransformMode,
-  TranslateMode,
-  CompositeMode,
   type FeatureCollection,
   // type Feature //different Feature to the one in FeatureCollection???
 } from '@deck.gl-community/editable-layers';

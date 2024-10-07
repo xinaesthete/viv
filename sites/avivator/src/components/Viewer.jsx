@@ -16,8 +16,14 @@ import {
   useViewerStore
 } from '../state';
 import { get3DExtension, useWindowSize } from '../utils';
+import useEditableLayer from './Experimental/editableLayerState';
 
 const Viewer = () => {
+  // add an editable layer, todo corresponding controls... etc
+  const editableLayer = useEditableLayer();
+  const deckProps = React.useMemo(() => {
+    return { layers: [ editableLayer ] }
+  }, [editableLayer]);
   const [useLinkedView, use3d, viewState] = useViewerStore(
     store => [store.useLinkedView, store.use3d, store.viewState],
     shallow
@@ -145,6 +151,7 @@ const Viewer = () => {
       colormap={colormap || 'viridis'}
       onViewStateChange={onViewStateChange}
       snapScaleBar
+      deckProps={deckProps}
     />
   );
 };

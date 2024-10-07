@@ -22,7 +22,12 @@ const Viewer = () => {
   // add an editable layer, todo corresponding controls... etc
   const editableLayer = useEditableLayer();
   const deckProps = React.useMemo(() => {
-    return { layers: [ editableLayer ] }
+    return { 
+      layers: [ editableLayer ],
+      controller: {
+        doubleClickZoom: false
+      }
+    }
   }, [editableLayer]);
   const [useLinkedView, use3d, viewState] = useViewerStore(
     store => [store.useLinkedView, store.use3d, store.viewState],

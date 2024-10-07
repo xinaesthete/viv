@@ -14,7 +14,7 @@ import { useMemo, useState } from 'react';
 import { getVivId } from '@vivjs/views';
 
 export default function useEditableLayer() {
-  const [mode, setMode] = useState(() => new DrawPolygonByDraggingMode());
+  const [mode, setMode] = useState(() => new DrawPolygonMode());
   const [features, setFeatures] = useState<FeatureCollection>({
     type: "FeatureCollection",
     features: []

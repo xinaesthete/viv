@@ -2,6 +2,7 @@ import {
   EditableGeoJsonLayer,
   DrawPolygonMode,
   type FeatureCollection,
+  CompositeMode,
   // type Feature //different Feature to the one in FeatureCollection???
 } from '@deck.gl-community/editable-layers';
 import type { GeoJsonEditMode } from '@deck.gl-community/editable-layers';
@@ -40,7 +41,15 @@ export default function useEditableLayer() {
         setFeatures(updatedData);
         // const featureIndexes = editContext.featureIndexes as number[];
         // setSelectedFeatureIndexes(featureIndexes || []);
-      }
+      },
+      onHover: (pickingInfo) => {
+        if (!(mode instanceof CompositeMode)) return;
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+        if ((pickingInfo as any).featureType === 'points') return;
+
+        // -- try to avoid selecting invisible features etc - refer to notes in other prototype
+        setSelectedFeatureIndexes(pickingInfo.index !== -1 ? [pickingInfo.index] : []);
+      },
     })
   }, [mode, features, setFeatures, selectedFeatureIndexes, id]);
   return editableLayer;

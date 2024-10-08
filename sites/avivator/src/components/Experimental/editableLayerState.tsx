@@ -10,6 +10,11 @@ import { useMemo, useState } from 'react';
 import { getVivId } from '@vivjs/views';
 import create from 'zustand';
 
+type EditOperation = {
+  editType: 'string',
+  features: FeatureCollection
+}
+
 type EditState = {
   mode: GeoJsonEditMode,
   setMode: (mode: GeoJsonEditMode) => void,
@@ -18,23 +23,21 @@ type EditState = {
   undoStack: FeatureCollection[],
   redoStack: FeatureCollection[],
   undo: () => void,
-  redo: () => void
+  redo: () => void,
+  commitEdit: (editType: string) => void
 }
+
+const getEmptyFeatureCollection = () => ({
+  type: "FeatureCollection",
+  features: []
+} as FeatureCollection);
 
 export const useEditState = create<EditState>(set => ({
   mode: new DrawPolygonMode(),
   setMode: mode => set(state => ({ ...state, mode })),
-  features: {
-    type: "FeatureCollection",
-    features: []
-  },
-  setFeatures: features => set(state => {
-    // consider an explicit commit state
-    const undoStack = [...state.undoStack, state.features];
-    const redoStack = [] as FeatureCollection[];
-    return { ...state, features, undoStack, redoStack }
-  }),
-  undoStack: [],
+  features: getEmptyFeatureCollection(),
+  setFeatures: features => set(state => ({ ...state, features })),
+  undoStack: [getEmptyFeatureCollection()],
   redoStack: [],
   undo: () => set(state => {
     if (state.undoStack.length) {
@@ -45,6 +48,7 @@ export const useEditState = create<EditState>(set => ({
       const redoStack = [...state.redoStack, undone];
       return { ...state, features, undoStack, redoStack };
     }
+    console.log("undo no-op")
   }),
   redo: () => set(state => {
     if (state.redoStack.length) {
@@ -54,11 +58,27 @@ export const useEditState = create<EditState>(set => ({
       const undoStack = [...state.undoStack, state.features];
       return { ...state, features, undoStack, redoStack };
     }
-  })
+    console.log("redo no-op");
+  }),
+  commitEdit(editType) {
+    console.log('commit', editType)
+    set(state => {
+      const undoStack = [...state.undoStack, state.features];
+      const redoStack = [] as FeatureCollection[];
+      return { ...state, undoStack, redoStack }
+    })
+  }
 }));
 
+function isEditFinished(editType: string) {
+  if (editType === "translated") return true;
+  if (editType === "addFeature") return true;
+  if (editType === "addPosition") return true;
+  return false;
+}
+
 export default function useEditableLayer() {
-  const { mode, features, setFeatures } = useEditState();
+  const { mode, features, setFeatures, commitEdit } = useEditState(({ mode, features, setFeatures, commitEdit }) => ({ mode, features, setFeatures, commitEdit }));
   const [selectedFeatureIndexes, setSelectedFeatureIndexes] = useState<number[]>([]);
   const id = `edit_${getVivId('detail')}`;
   const editableLayer = useMemo(() => {
@@ -67,8 +87,9 @@ export default function useEditableLayer() {
       mode: mode,
       data: features,
       selectedFeatureIndexes, // behaviour of this when undefined is a significant pain-point.
-      onEdit: ({ updatedData, editContext }) => {
+      onEdit: ({ updatedData, editType }) => {
         setFeatures(updatedData);
+        if (isEditFinished(editType)) commitEdit(editType);
         // const featureIndexes = editContext.featureIndexes as number[];
         // setSelectedFeatureIndexes(featureIndexes || []);
       },
@@ -79,8 +100,8 @@ export default function useEditableLayer() {
 
         // -- try to avoid selecting invisible features etc - refer to notes in other prototype
         setSelectedFeatureIndexes(pickingInfo.index !== -1 ? [pickingInfo.index] : []);
-      },
+      }
     })
-  }, [mode, features, setFeatures, selectedFeatureIndexes, id]);
+  }, [mode, features, setFeatures, selectedFeatureIndexes, id, commitEdit]);
   return editableLayer;
 }

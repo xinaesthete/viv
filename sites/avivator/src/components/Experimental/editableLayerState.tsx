@@ -20,6 +20,8 @@ type EditState = {
   setMode: (mode: GeoJsonEditMode) => void,
   features: FeatureCollection,
   setFeatures: (features: FeatureCollection) => void,
+  selectedFeatureIndexes: number[],
+  setSelectedFeatureIndexes: (selectedFeatureIndexes: number[]) => void,
   undoStack: FeatureCollection[],
   redoStack: FeatureCollection[],
   undo: () => void,
@@ -37,12 +39,14 @@ export const useEditState = create<EditState>(set => ({
   setMode: mode => set(state => ({ ...state, mode })),
   features: getEmptyFeatureCollection(),
   setFeatures: features => set(state => ({ ...state, features })),
+  selectedFeatureIndexes: [],
+  setSelectedFeatureIndexes: selectedFeatureIndexes => set(state => ({...state, selectedFeatureIndexes})),
   undoStack: [getEmptyFeatureCollection()],
   redoStack: [],
   undo: () => set(state => {
     if (state.undoStack.length) {
       const undoStack = [...state.undoStack];
-      const features = undoStack.pop() || { type: "FeatureCollection", features: [] };
+      const features = undoStack.pop() || getEmptyFeatureCollection();
       // if (!features) return state;
       const undone = state.features;
       const redoStack = [...state.redoStack, undone];
@@ -79,7 +83,7 @@ function isEditFinished(editType: string) {
 
 export default function useEditableLayer() {
   const { mode, features, setFeatures, commitEdit } = useEditState(({ mode, features, setFeatures, commitEdit }) => ({ mode, features, setFeatures, commitEdit }));
-  const [selectedFeatureIndexes, setSelectedFeatureIndexes] = useState<number[]>([]);
+  const { selectedFeatureIndexes, setSelectedFeatureIndexes } = useEditState(({ selectedFeatureIndexes, setSelectedFeatureIndexes }) => ({ selectedFeatureIndexes, setSelectedFeatureIndexes }));
   const id = `edit_${getVivId('detail')}`;
   const editableLayer = useMemo(() => {
     return new EditableGeoJsonLayer({
@@ -102,6 +106,6 @@ export default function useEditableLayer() {
         setSelectedFeatureIndexes(pickingInfo.index !== -1 ? [pickingInfo.index] : []);
       }
     })
-  }, [mode, features, setFeatures, selectedFeatureIndexes, id, commitEdit]);
+  }, [mode, features, setFeatures, selectedFeatureIndexes, setSelectedFeatureIndexes, id, commitEdit]);
   return editableLayer;
 }

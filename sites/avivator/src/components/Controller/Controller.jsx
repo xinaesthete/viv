@@ -29,7 +29,6 @@ import SideBySideToggle from './components/SideBySideToggle';
 import Slicer from './components/Slicer';
 import VolumeButton from './components/VolumeButton';
 import ZoomLockToggle from './components/ZoomLockToggle';
-import EditableLayerControls from '../Experimental/EditableLayerControls';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -236,7 +235,6 @@ const Controller = () => {
           <PanLockToggle />
         </>
       )}
-      <EditableLayerControls />
     </Menu>
   );
 };

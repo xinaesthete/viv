@@ -316,13 +316,7 @@ importers:
       '@math.gl/core':
         specifier: 'catalog:'
         version: 4.0.1
-      '@turf/bearing':
-        specifier: ^6.5.0
-        version: 6.5.0
       '@turf/clone':
-        specifier: ^6.5.0
-        version: 6.5.0
-      '@turf/distance':
         specifier: ^6.5.0
         version: 6.5.0
       '@turf/helpers':

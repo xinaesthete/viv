@@ -1,8 +1,6 @@
 import { TranslateMode, type FeatureCollection, type ModeProps, type Position, type AnyCoordinates, ImmutableFeatureCollection, type Geometry } from "@deck.gl-community/editable-layers";
 import type { GeoJsonEditAction } from "@deck.gl-community/editable-layers/dist/edit-modes/geojson-edit-mode";
 
-import turfBearing from '@turf/bearing';
-import turfDistance from '@turf/distance';
 import clone from '@turf/clone';
 import { point, type Feature as TurfFeature, type Geometry as TurfGeometry } from '@turf/helpers';
 
@@ -93,9 +91,6 @@ export default class TranslateModeEx extends TranslateMode {
     const c1 = p1.geometry.coordinates;
     const c2 = p2.geometry.coordinates;
     const dp: [number, number] = [c1[0] - c2[0], c1[1] - c2[1]];
-
-    const distanceMoved = turfDistance(p1, p2);
-    const direction = turfBearing(p1, p2);
 
     const movedFeatures = this._geometryBeforeTranslate.features.map((feature) =>
       // xxx: original version of translateFromCenter was based on turfRhumb stuff that blows up with our coordinates

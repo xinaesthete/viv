@@ -10,6 +10,7 @@ import {
   TranslateMode,
   CompositeMode,
 } from '@deck.gl-community/editable-layers';
+import TranslateModeEx from './translate-mode-exp';
 
 function DownloadButton() {
   const metadata = useMetadata() as unknown as { Name?: string };
@@ -35,7 +36,7 @@ function DownloadButton() {
 function ModeSelector() {
   const { mode, setMode } = useEditState(({mode, setMode}) => ({mode, setMode}));
   const setEditMode = () => setMode(new CompositeMode([new ModifyMode(), 
-    // new TranslateMode() //this assumes mercator coordinates...
+    new TranslateModeEx() //this assumes mercator coordinates...
   ]));
   const setDrawDrag = () => setMode(new DrawPolygonByDraggingMode());
   const setDraw = () => setMode(new DrawPolygonMode());

@@ -35,8 +35,9 @@ function DownloadButton() {
 
 function ModeSelector() {
   const { mode, setMode } = useEditState(({mode, setMode}) => ({mode, setMode}));
-  const setEditMode = () => setMode(new CompositeMode([new ModifyMode(), 
-    new TranslateModeEx() //this Ex version works without mercator coordinates...
+  const setEditMode = () => setMode(new CompositeMode([
+    new TranslateModeEx(), //this Ex version works without mercator coordinates...
+    new ModifyMode(), 
   ]));
   const setDrawDrag = () => setMode(new DrawPolygonByDraggingMode());
   const setDraw = () => setMode(new DrawPolygonMode());

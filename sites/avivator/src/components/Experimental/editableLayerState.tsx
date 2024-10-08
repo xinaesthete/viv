@@ -15,6 +15,10 @@ type EditState = {
   setMode: (mode: GeoJsonEditMode) => void,
   features: FeatureCollection,
   setFeatures: (features: FeatureCollection) => void,
+  undoStack: FeatureCollection[],
+  redoStack: FeatureCollection[],
+  undo: () => void,
+  redo: () => void
 }
 
 export const useEditState = create<EditState>(set => ({
@@ -24,7 +28,33 @@ export const useEditState = create<EditState>(set => ({
     type: "FeatureCollection",
     features: []
   },
-  setFeatures: features => set(state => ({ ...state, features }))
+  setFeatures: features => set(state => {
+    // consider an explicit commit state
+    const undoStack = [...state.undoStack, state.features];
+    const redoStack = [] as FeatureCollection[];
+    return { ...state, features, undoStack, redoStack }
+  }),
+  undoStack: [],
+  redoStack: [],
+  undo: () => set(state => {
+    if (state.undoStack.length) {
+      const undoStack = [...state.undoStack];
+      const features = undoStack.pop() || { type: "FeatureCollection", features: [] };
+      // if (!features) return state;
+      const undone = state.features;
+      const redoStack = [...state.redoStack, undone];
+      return { ...state, features, undoStack, redoStack };
+    }
+  }),
+  redo: () => set(state => {
+    if (state.redoStack.length) {
+      const redoStack = [...state.redoStack];
+      const features = redoStack.pop();
+      if (!features) return state;
+      const undoStack = [...state.undoStack, state.features];
+      return { ...state, features, undoStack, redoStack };
+    }
+  })
 }));
 
 export default function useEditableLayer() {

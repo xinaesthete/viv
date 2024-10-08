@@ -1,4 +1,4 @@
-import { Button } from '@material-ui/core';
+import { Box, Button, Divider } from '@material-ui/core';
 import React, { useCallback } from 'react'; //why is this necessary here?
 import { useEditState } from './editableLayerState';
 import { useMetadata } from '../../state';
@@ -36,25 +36,38 @@ function DownloadButton() {
 function ModeSelector() {
   const { mode, setMode } = useEditState(({mode, setMode}) => ({mode, setMode}));
   const setEditMode = () => setMode(new CompositeMode([new ModifyMode(), 
-    new TranslateModeEx() //this assumes mercator coordinates...
+    new TranslateModeEx() //this Ex version works without mercator coordinates...
   ]));
   const setDrawDrag = () => setMode(new DrawPolygonByDraggingMode());
   const setDraw = () => setMode(new DrawPolygonMode());
+  const drawPoly = mode instanceof DrawPolygonMode && !(mode instanceof DrawPolygonByDraggingMode);
   return (
     <>
-    <Button onClick={setEditMode}>edit</Button>
-    <Button onClick={setDrawDrag}>lasso</Button>
-    <Button onClick={setDraw}>draw</Button>
+    <Button variant={mode instanceof CompositeMode ? "outlined" : undefined} onClick={setEditMode}>edit</Button>
+    <Button variant={mode instanceof DrawPolygonByDraggingMode ? "outlined" : undefined} onClick={setDrawDrag}>lasso</Button>
+    <Button variant={drawPoly ? "outlined" : undefined} onClick={setDraw}>draw</Button>
     </>
   )
 }
 
+function UndoPanel() {
+  const { undo, redo } = useEditState(({undo, redo}) => ({undo, redo}));
+  return (
+    <>
+    <Button onClick={undo}>undo</Button>
+    <Button onClick={redo}>redo</Button>
+    </>
+  )
+}
 
 export default function EditableLayerControls() {
   return (
-    <>
+    <Box position="absolute" left={0} top={0} m={1}>
       <ModeSelector />
+      <Divider />
+      <UndoPanel />
+      <Divider />
       <DownloadButton />
-    </>
+    </Box>
   )
 }

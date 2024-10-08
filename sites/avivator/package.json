@@ -21,6 +21,10 @@
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "@vivjs/views": "workspace:*",
+    "@turf/helpers": "^6.5.0",
+    "@turf/bearing": "^6.5.0",
+    "@turf/distance": "^6.5.0",
+    "@turf/clone": "^6.5.0",
     "zustand": "^3.4.1"
   },
   "devDependencies": {

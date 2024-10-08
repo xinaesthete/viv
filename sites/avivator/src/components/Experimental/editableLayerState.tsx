@@ -87,13 +87,13 @@ export default function useEditableLayer() {
       mode: mode,
       data: features,
       selectedFeatureIndexes, // behaviour of this when undefined is a significant pain-point.
-      onEdit: ({ updatedData, editType }) => {
+      onEdit({ updatedData, editType }) {
         setFeatures(updatedData);
         if (isEditFinished(editType)) commitEdit(editType);
         // const featureIndexes = editContext.featureIndexes as number[];
         // setSelectedFeatureIndexes(featureIndexes || []);
       },
-      onHover: (pickingInfo) => {
+      onHover(pickingInfo) {
         if (!(mode instanceof CompositeMode)) return;
         // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         if ((pickingInfo as any).featureType === 'points') return;

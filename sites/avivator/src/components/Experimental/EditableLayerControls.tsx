@@ -1,3 +1,7 @@
+import "react18-json-view/src/style.css";
+// If dark mode is needed, import `dark.css`.
+import "react18-json-view/src/dark.css";
+
 import { Box, Button, Checkbox, Divider, Grid, IconButton } from '@material-ui/core';
 import React, { useCallback, useState } from 'react'; //why is this necessary here?
 import { useEditState } from './editableLayerState';
@@ -12,6 +16,7 @@ import {
 } from '@deck.gl-community/editable-layers';
 import TranslateModeEx from './translate-mode-exp';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import JsonView from "react18-json-view";
 
 function DownloadButton() {
   const metadata = useMetadata() as unknown as { Name?: string };
@@ -115,6 +120,11 @@ function FeatureView() {
   ));
 }
 
+function GeoJSON() {
+  const { features } = useEditState(({features}) => ({features}));
+  return <JsonView src={features} collapsed={true}/>
+}
+
 export default function EditableLayerControls() {
   return (
     <Box position="absolute" left={0} top={0} m={1} style={{ color: "white" }} >
@@ -124,6 +134,7 @@ export default function EditableLayerControls() {
       <UndoPanel />
       <Divider />
       <DownloadButton />
+      <GeoJSON />
     </Box>
   )
 }

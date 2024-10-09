@@ -60,7 +60,7 @@ function EditOperationList() {
   return (
     <ul>
       {undoStack.map(({editType, features}, i) => {
-        const current = undoIndex === i ? `<${i}` : '';
+        const current = undoIndex === i ? '<' : '';
         return (
           // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
           <li key={i}>{editType}: {features.features.length} features {current}</li>

@@ -99,7 +99,7 @@ function FeatureView() {
         aria-label="delete-shape"
         size="small"
         onClick={() => {
-          const newArr = features.features.slice(i);
+          const newArr = features.features.toSpliced(i, 1);
           setFeatures({...features, features: newArr});
           commitEdit('deleteShape');
         }}

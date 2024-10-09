@@ -1,4 +1,4 @@
-import { Box, Button, Divider } from '@material-ui/core';
+import { Box, Button, Divider, Grid, IconButton } from '@material-ui/core';
 import React, { useCallback } from 'react'; //why is this necessary here?
 import { useEditState } from './editableLayerState';
 import { useMetadata } from '../../state';
@@ -11,6 +11,8 @@ import {
   CompositeMode,
 } from '@deck.gl-community/editable-layers';
 import TranslateModeEx from './translate-mode-exp';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import type { FeatureCollection } from '@deck.gl-community/editable-layers';
 
 function DownloadButton() {
   const metadata = useMetadata() as unknown as { Name?: string };
@@ -51,21 +53,63 @@ function ModeSelector() {
   )
 }
 
+function EditOperationList({edits}: {edits: FeatureCollection[]}) {
+  return (
+    <ul>
+      {edits.map((feature, i) => {
+        return (
+          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+          <li key={i}>{feature.features.length} features</li>
+        )
+      })}
+    </ul>
+  )
+}
+
+
 function UndoPanel() {
   const { undo, redo } = useEditState(({undo, redo}) => ({undo, redo}));
+  const { undoStack, redoStack } = useEditState(({ undoStack, redoStack }) => ({ undoStack, redoStack }));
   return (
     <>
     <Button onClick={undo}>undo</Button>
     <Button onClick={redo}>redo</Button>
+    <Divider />
+    Undo history:
+    <EditOperationList edits={undoStack} />
+    Redo:
+    <EditOperationList edits={redoStack} />
     </>
   )
 }
 
+function FeatureView() {
+  const { features, setFeatures, commitEdit } = useEditState(({ features, setFeatures, commitEdit }) => ({ features, setFeatures, commitEdit }));
+  return features.features.map((feature, i) => (
+    // biome-ignore lint/suspicious/noArrayIndexKey: may consider having ids for features.
+    <Grid key={i}>
+      Polygon {i}
+      <IconButton
+        aria-label="delete-shape"
+        size="small"
+        onClick={() => {
+          const newArr = features.features.slice(i);
+          setFeatures({...features, features: newArr});
+          commitEdit('deleteShape');
+        }}
+        >
+          <HighlightOffIcon fontSize="small" />
+        </IconButton>
+    </Grid>
+  ));
+}
+
 export default function EditableLayerControls() {
   return (
-    <Box position="absolute" left={0} top={0} m={1}>
+    <Box position="absolute" left={0} top={0} m={1} style={{ color: "white" }} >
       <ModeSelector />
       <Divider />
+      <FeatureView />
       <UndoPanel />
       <Divider />
       <DownloadButton />

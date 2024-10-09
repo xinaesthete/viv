@@ -6,7 +6,7 @@ import {
   // type Feature //different Feature to the one in FeatureCollection???
 } from '@deck.gl-community/editable-layers';
 import type { GeoJsonEditMode } from '@deck.gl-community/editable-layers';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { getVivId } from '@vivjs/views';
 import create from 'zustand';
 import { v4 as uuid } from 'uuid';
@@ -68,12 +68,50 @@ export const useEditState = create<EditState>(set => ({
   commitEdit(editType) {
     console.log('commit', editType)
     set(state => {
-      const undoStack = [...state.undoStack, state.features];
+      const undoStack = [...state.undoStack, state.features]; //the first undo will pop back to the current state, not previous.
       const redoStack = [] as FeatureCollection[];
       return { ...state, undoStack, redoStack }
     })
   }
 }));
+
+import { useEffect } from 'react';
+
+/**ChatGPT generated function; LGTM(?)
+ */
+function useKeyboardShortcuts() {
+  const { undo, redo } = useEditState(({ undo, redo }) => ({ undo, redo }));
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+
+      // Detect Undo: Ctrl+Z or Cmd+Z
+      if ((event.ctrlKey || (isMac && event.metaKey)) && event.key === 'z') {
+        if (event.shiftKey) {
+          redo(); // Ctrl+Shift+Z (or Cmd+Shift+Z)
+        } else {
+          undo(); // Ctrl+Z (or Cmd+Z)
+        }
+        event.preventDefault(); // Prevent the default browser behavior
+      }
+
+      // Detect Redo: Ctrl+Y (for non-Mac platforms)
+      if (event.ctrlKey && event.key === 'y' && !isMac) {
+        redo();
+        event.preventDefault();
+      }
+    };
+
+    // Attach the event listener
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [undo, redo]);
+}
+
 
 function isEditFinished(editType: string) {
   if (editType === "translated") return true;
@@ -83,9 +121,11 @@ function isEditFinished(editType: string) {
 }
 
 export default function useEditableLayer() {
+  useKeyboardShortcuts();
   const { mode, features, setFeatures, commitEdit } = useEditState(({ mode, features, setFeatures, commitEdit }) => ({ mode, features, setFeatures, commitEdit }));
   const { selectedFeatureIndexes, setSelectedFeatureIndexes } = useEditState(({ selectedFeatureIndexes, setSelectedFeatureIndexes }) => ({ selectedFeatureIndexes, setSelectedFeatureIndexes }));
   const id = `edit_${getVivId('detail')}`;
+  // nb should this be in zustand as well?
   const editableLayer = useMemo(() => {
     return new EditableGeoJsonLayer({
       id,

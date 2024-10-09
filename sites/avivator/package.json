@@ -15,21 +15,22 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@math.gl/core": "catalog:",
+    "@turf/clone": "^6.5.0",
+    "@turf/helpers": "^6.5.0",
+    "@vivjs/views": "workspace:*",
     "geotiff": "^2.0.5",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
-    "@vivjs/views": "workspace:*",
-    "@turf/helpers": "^6.5.0",
-    "@turf/clone": "^6.5.0",
+    "uuid": "^10.0.0",
     "zustand": "^3.4.1"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.2.1",
-    "vite": "^5.3.2",
     "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0"
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.3.2"
   },
   "version": null
 }

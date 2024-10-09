@@ -53,13 +53,17 @@ function ModeSelector() {
   )
 }
 
-function EditOperationList({edits}: {edits: FeatureCollection[]}) {
+function EditOperationList() {
+  const { undoStack } = useEditState(({ undoStack }) => ({ undoStack }));
+  const { undoIndex } = useEditState(({ undoIndex }) => ({ undoIndex }));
+
   return (
     <ul>
-      {edits.map((feature, i) => {
+      {undoStack.map((feature, i) => {
+        const current = undoIndex === i ? `<${i}` : '';
         return (
           // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-          <li key={i}>{feature.features.length} features</li>
+          <li key={i}>{feature.features.length} features {current}</li>
         )
       })}
     </ul>
@@ -69,16 +73,13 @@ function EditOperationList({edits}: {edits: FeatureCollection[]}) {
 
 function UndoPanel() {
   const { undo, redo } = useEditState(({undo, redo}) => ({undo, redo}));
-  const { undoStack, redoStack } = useEditState(({ undoStack, redoStack }) => ({ undoStack, redoStack }));
   return (
     <>
     <Button onClick={undo}>undo</Button>
     <Button onClick={redo}>redo</Button>
     <Divider />
     Undo history:
-    <EditOperationList edits={undoStack} />
-    Redo:
-    <EditOperationList edits={redoStack} />
+    <EditOperationList />
     </>
   )
 }

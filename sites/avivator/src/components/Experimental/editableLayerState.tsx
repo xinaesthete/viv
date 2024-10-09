@@ -5,8 +5,9 @@ import {
   CompositeMode,
   // type Feature //different Feature to the one in FeatureCollection???
 } from '@deck.gl-community/editable-layers';
+// import clone from '@turf/clone';
 import type { GeoJsonEditMode } from '@deck.gl-community/editable-layers';
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import { getVivId } from '@vivjs/views';
 import create from 'zustand';
 import { v4 as uuid } from 'uuid';
@@ -24,7 +25,7 @@ type EditState = {
   selectedFeatureIndexes: number[],
   setSelectedFeatureIndexes: (selectedFeatureIndexes: number[]) => void,
   undoStack: FeatureCollection[],
-  redoStack: FeatureCollection[],
+  undoIndex: number,
   undo: () => void,
   redo: () => void,
   commitEdit: (editType: string) => void
@@ -43,39 +44,40 @@ export const useEditState = create<EditState>(set => ({
   selectedFeatureIndexes: [],
   setSelectedFeatureIndexes: selectedFeatureIndexes => set(state => ({...state, selectedFeatureIndexes})),
   undoStack: [getEmptyFeatureCollection()],
-  redoStack: [],
+  undoIndex: 0,
   undo: () => set(state => {
     if (state.undoStack.length) {
-      const undoStack = [...state.undoStack];
-      const features = undoStack.pop() || getEmptyFeatureCollection();
-      // if (!features) return state;
-      const undone = state.features;
-      const redoStack = [...state.redoStack, undone];
-      return { ...state, features, undoStack, redoStack };
+      const { undoStack } = state;
+      let { undoIndex } = state;
+      if (--undoIndex < 0) return;
+      // may want to clone here (or rather, in commitEdit) - turfjs vs editable-layers type...
+      const features = undoStack[undoIndex] || getEmptyFeatureCollection();
+      return { ...state, features, undoStack, undoIndex };
     }
     console.log("undo no-op")
   }),
   redo: () => set(state => {
-    if (state.redoStack.length) {
-      const redoStack = [...state.redoStack];
-      const features = redoStack.pop();
-      if (!features) return state;
-      const undoStack = [...state.undoStack, state.features];
-      return { ...state, features, undoStack, redoStack };
-    }
-    console.log("redo no-op");
+    const { undoStack, undoIndex } = state;
+    const n = undoStack.length;
+    if (undoIndex === n-1) return;
+    if (undoIndex >= n) throw `illegal undoIndex ${undoIndex} with undoStack.length ${n}`;
+    const newIndex = undoIndex + 1;
+    const features = undoStack[newIndex];
+    return  {...state, features, undoIndex: newIndex };
   }),
   commitEdit(editType) {
     console.log('commit', editType)
     set(state => {
-      const undoStack = [...state.undoStack, state.features]; //the first undo will pop back to the current state, not previous.
-      const redoStack = [] as FeatureCollection[];
-      return { ...state, undoStack, redoStack }
+      let undoIndex = state.undoIndex;
+      // check for off-by-one etc
+      const undoStack = state.undoStack.slice(0, undoIndex + 1);
+      undoIndex = undoStack.push(state.features) - 1; //will the first undo will pop back to the current state, not previous?
+      // const redoStack = [] as FeatureCollection[];
+      return { ...state, undoStack, undoIndex }
     })
   }
 }));
 
-import { useEffect } from 'react';
 
 /**ChatGPT generated function; LGTM(?)
  */

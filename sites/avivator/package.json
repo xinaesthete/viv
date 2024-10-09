@@ -17,6 +17,7 @@
     "@math.gl/core": "catalog:",
     "@turf/clone": "^6.5.0",
     "@turf/helpers": "^6.5.0",
+    "@types/uuid": "^10.0.0",
     "@vivjs/views": "workspace:*",
     "geotiff": "^2.0.5",
     "lodash": "^4.17.21",

@@ -92,6 +92,10 @@ export default function useEditableLayer() {
       data: features,
       selectedFeatureIndexes, // behaviour of this when undefined is a significant pain-point.
       onEdit({ updatedData, editType }) {
+        // ensure all features have an id - should this be a default behaviour?
+        for (const f of updatedData.features) {
+          f.id = f.id || uuid();
+        }
         setFeatures(updatedData);
         if (isEditFinished(editType)) commitEdit(editType);
         // const featureIndexes = editContext.featureIndexes as number[];

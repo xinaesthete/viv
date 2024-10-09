@@ -9,6 +9,7 @@ import type { GeoJsonEditMode } from '@deck.gl-community/editable-layers';
 import { useMemo, useState } from 'react';
 import { getVivId } from '@vivjs/views';
 import create from 'zustand';
+import { v4 as uuid } from 'uuid';
 
 type EditOperation = {
   editType: 'string',

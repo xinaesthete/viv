@@ -62,11 +62,13 @@ function EditOperationList() {
       {undoStack.map(({editType, features}, i) => {
         const current = undoIndex === i ? '<' : '';
         return (
-          // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
           <li 
-          onClick={() => goToUndo(i)}
           // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-          key={i}>{editType}: {features.features.length} features {current}</li>
+          key={i}>
+            <Button onClick={() => goToUndo(i)}>
+              {editType}: {features.features.length} features {current}
+            </Button>
+          </li>
         )
       })}
     </ul>

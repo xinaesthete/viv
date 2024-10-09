@@ -16,13 +16,13 @@ import {
   useViewerStore
 } from '../state';
 import { get3DExtension, useWindowSize } from '../utils';
-import useEditableLayer from './Experimental/editableLayerState';
+import useEditableLayer from './Experimental/useEditableLayer';
 
 const Viewer = () => {
   // add an editable layer, todo corresponding controls... etc
   const editableLayer = useEditableLayer();
   const deckProps = React.useMemo(() => {
-    return { 
+    return {
       layers: [ editableLayer ],
       controller: {
         doubleClickZoom: false

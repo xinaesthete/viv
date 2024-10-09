@@ -1,5 +1,5 @@
-import { Box, Button, Divider, Grid, IconButton } from '@material-ui/core';
-import React, { useCallback } from 'react'; //why is this necessary here?
+import { Box, Button, Checkbox, Divider, Grid, IconButton } from '@material-ui/core';
+import React, { useCallback, useState } from 'react'; //why is this necessary here?
 import { useEditState } from './editableLayerState';
 import { useMetadata } from '../../state';
 import {
@@ -78,13 +78,14 @@ function EditOperationList() {
 
 function UndoPanel() {
   const { undo, redo } = useEditState(({undo, redo}) => ({undo, redo}));
+  const [ showHistory, setShowHistory ] = useState(false);
   return (
     <>
     <Button onClick={undo}>undo</Button>
     <Button onClick={redo}>redo</Button>
     <Divider />
-    Undo history:
-    <EditOperationList />
+    Undo history: <Checkbox onChange={(_, checked) => setShowHistory(checked)} checked={showHistory} />
+    {showHistory && <EditOperationList />}
     </>
   )
 }

@@ -59,11 +59,11 @@ function EditOperationList() {
 
   return (
     <ul>
-      {undoStack.map((feature, i) => {
+      {undoStack.map(({editType, features}, i) => {
         const current = undoIndex === i ? `<${i}` : '';
         return (
           // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-          <li key={i}>{feature.features.length} features {current}</li>
+          <li key={i}>{editType}: {features.features.length} features {current}</li>
         )
       })}
     </ul>

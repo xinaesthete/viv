@@ -13,7 +13,7 @@ import create from 'zustand';
 import { v4 as uuid } from 'uuid';
 
 type EditOperation = {
-  editType: 'string',
+  editType: string,
   features: FeatureCollection
 }
 
@@ -24,7 +24,7 @@ type EditState = {
   setFeatures: (features: FeatureCollection) => void,
   selectedFeatureIndexes: number[],
   setSelectedFeatureIndexes: (selectedFeatureIndexes: number[]) => void,
-  undoStack: FeatureCollection[],
+  undoStack: EditOperation[],
   undoIndex: number,
   undo: () => void,
   redo: () => void,
@@ -43,7 +43,7 @@ export const useEditState = create<EditState>(set => ({
   setFeatures: features => set(state => ({ ...state, features })),
   selectedFeatureIndexes: [],
   setSelectedFeatureIndexes: selectedFeatureIndexes => set(state => ({...state, selectedFeatureIndexes})),
-  undoStack: [getEmptyFeatureCollection()],
+  undoStack: [{ editType: 'init', features: getEmptyFeatureCollection()}],
   undoIndex: 0,
   undo: () => set(state => {
     if (state.undoStack.length) {
@@ -51,7 +51,7 @@ export const useEditState = create<EditState>(set => ({
       let { undoIndex } = state;
       if (--undoIndex < 0) return;
       // may want to clone here (or rather, in commitEdit) - turfjs vs editable-layers type...
-      const features = undoStack[undoIndex] || getEmptyFeatureCollection();
+      const { features } = undoStack[undoIndex];// || getEmptyFeatureCollection();
       return { ...state, features, undoStack, undoIndex };
     }
     console.log("undo no-op")
@@ -62,7 +62,7 @@ export const useEditState = create<EditState>(set => ({
     if (undoIndex === n-1) return;
     if (undoIndex >= n) throw `illegal undoIndex ${undoIndex} with undoStack.length ${n}`;
     const newIndex = undoIndex + 1;
-    const features = undoStack[newIndex];
+    const { features } = undoStack[newIndex];
     return  {...state, features, undoIndex: newIndex };
   }),
   commitEdit(editType) {
@@ -71,7 +71,9 @@ export const useEditState = create<EditState>(set => ({
       let undoIndex = state.undoIndex;
       // check for off-by-one etc
       const undoStack = state.undoStack.slice(0, undoIndex + 1);
-      undoIndex = undoStack.push(state.features) - 1; //will the first undo will pop back to the current state, not previous?
+      const { features } = state;
+      const entry = { editType, features };
+      undoIndex = undoStack.push(entry) - 1; //will the first undo will pop back to the current state, not previous?
       // const redoStack = [] as FeatureCollection[];
       return { ...state, undoStack, undoIndex }
     })

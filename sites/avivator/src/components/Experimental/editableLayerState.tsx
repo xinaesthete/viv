@@ -1,12 +1,13 @@
 import {
   EditableGeoJsonLayer,
   DrawPolygonMode,
-  type FeatureCollection,
+  // type FeatureCollection,
   CompositeMode,
   // type Feature //different Feature to the one in FeatureCollection???
 } from '@deck.gl-community/editable-layers';
 // import clone from '@turf/clone';
 import type { GeoJsonEditMode } from '@deck.gl-community/editable-layers';
+import type { FeatureCollection } from '@turf/helpers';
 import { useMemo, useEffect } from 'react';
 import { getVivId } from '@vivjs/views';
 import create from 'zustand';
@@ -146,6 +147,7 @@ export default function useEditableLayer() {
     return new EditableGeoJsonLayer({
       id,
       mode: mode,
+      //@ts-ignore-next-line - this is a pain-point; editable-layers type seems a bit bad...
       data: features,
       selectedFeatureIndexes, // behaviour of this when undefined is a significant pain-point.
       onEdit({ updatedData, editType }) {

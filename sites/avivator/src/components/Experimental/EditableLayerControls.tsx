@@ -17,6 +17,7 @@ import {
 import TranslateModeEx from './translate-mode-exp';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import JsonView from "react18-json-view";
+import FeatureThumbnail from "./FeatureThumbnail";
 
 function DownloadButton() {
   const metadata = useMetadata() as unknown as { Name?: string };
@@ -27,12 +28,12 @@ function DownloadButton() {
     const file = new File([str], `${name}.json`, { type: 'text/json' });
     const link = document.createElement('a');
     const url = URL.createObjectURL(file);
-  
+
     link.href = url
     link.download = file.name;
     document.body.appendChild(link);
     link.click();
-  
+
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
   }, [metadata]);
@@ -43,7 +44,7 @@ function ModeSelector() {
   const { mode, setMode } = useEditState(({mode, setMode}) => ({mode, setMode}));
   const setEditMode = () => setMode(new CompositeMode([
     new TranslateModeEx(), //this Ex version works without mercator coordinates...
-    new ModifyMode(), 
+    new ModifyMode(),
   ]));
   const setDrawDrag = () => setMode(new DrawPolygonByDraggingMode());
   const setDraw = () => setMode(new DrawPolygonMode());
@@ -67,7 +68,7 @@ function EditOperationList() {
       {undoStack.map(({editType, features}, i) => {
         const current = undoIndex === i ? '<' : '';
         return (
-          <li 
+          <li
           // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
           key={i}>
             <Button onClick={() => goToUndo(i)}>
@@ -104,7 +105,7 @@ function FeatureView() {
     onMouseEnter={() => setSelectedFeatureIndexes([i])}
     onMouseLeave={() => setSelectedFeatureIndexes([])}
     >
-      Polygon {i} ({feature.geometry.coordinates.flat().length-1} vertices)
+      Polygon {i} <FeatureThumbnail feature={feature} />
       <IconButton
         aria-label="delete-shape"
         size="small"

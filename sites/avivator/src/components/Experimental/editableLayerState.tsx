@@ -28,6 +28,7 @@ type EditState = {
   undoIndex: number,
   undo: () => void,
   redo: () => void,
+  goToUndo: (i: number) => void,
   commitEdit: (editType: string) => void
 }
 
@@ -65,6 +66,17 @@ export const useEditState = create<EditState>(set => ({
     const { features } = undoStack[newIndex];
     return  {...state, features, undoIndex: newIndex };
   }),
+  goToUndo(undoIndex) {
+    set(state => {
+      const { undoStack } = state;
+      if (undoIndex >= undoStack.length || undoIndex < 0) {
+        console.error('goToUndo out of bounds', undoIndex, undoStack.length);
+        return;
+      }
+      const { features } = undoStack[undoIndex];
+      return { ...state, features, undoIndex };
+    })
+  },
   commitEdit(editType) {
     console.log('commit', editType)
     set(state => {

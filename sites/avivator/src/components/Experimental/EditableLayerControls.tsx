@@ -7,12 +7,11 @@ import {
   DrawPolygonByDraggingMode,
   ModifyMode,
   // TransformMode,
-  TranslateMode,
+  // TranslateMode,
   CompositeMode,
 } from '@deck.gl-community/editable-layers';
 import TranslateModeEx from './translate-mode-exp';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import type { FeatureCollection } from '@deck.gl-community/editable-layers';
 
 function DownloadButton() {
   const metadata = useMetadata() as unknown as { Name?: string };
@@ -56,14 +55,18 @@ function ModeSelector() {
 function EditOperationList() {
   const { undoStack } = useEditState(({ undoStack }) => ({ undoStack }));
   const { undoIndex } = useEditState(({ undoIndex }) => ({ undoIndex }));
+  const { goToUndo } = useEditState(({ goToUndo }) => ({ goToUndo }));
 
   return (
     <ul>
       {undoStack.map(({editType, features}, i) => {
         const current = undoIndex === i ? '<' : '';
         return (
+          // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+          <li 
+          onClick={() => goToUndo(i)}
           // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-          <li key={i}>{editType}: {features.features.length} features {current}</li>
+          key={i}>{editType}: {features.features.length} features {current}</li>
         )
       })}
     </ul>

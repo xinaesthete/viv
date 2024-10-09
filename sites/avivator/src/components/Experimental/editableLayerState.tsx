@@ -121,6 +121,8 @@ function isEditFinished(editType: string) {
   if (editType === "translated") return true;
   if (editType === "addFeature") return true;
   if (editType === "addPosition") return true;
+  if (editType.includes("finish")) return true;
+  if (editType.includes("remove")) return true;
   return false;
 }
 

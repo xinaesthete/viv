@@ -91,9 +91,13 @@ function UndoPanel() {
 
 function FeatureView() {
   const { features, setFeatures, commitEdit } = useEditState(({ features, setFeatures, commitEdit }) => ({ features, setFeatures, commitEdit }));
+  const { setSelectedFeatureIndexes } = useEditState(({ setSelectedFeatureIndexes }) => ({ setSelectedFeatureIndexes }));
   return features.features.map((feature, i) => (
     // biome-ignore lint/suspicious/noArrayIndexKey: may consider having ids for features.
-    <Grid key={i}>
+    <Grid key={i}
+    onMouseEnter={() => setSelectedFeatureIndexes([i])}
+    onMouseLeave={() => setSelectedFeatureIndexes([])}
+    >
       Polygon {i}
       <IconButton
         aria-label="delete-shape"

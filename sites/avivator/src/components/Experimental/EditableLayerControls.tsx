@@ -98,7 +98,7 @@ function FeatureView() {
     onMouseEnter={() => setSelectedFeatureIndexes([i])}
     onMouseLeave={() => setSelectedFeatureIndexes([])}
     >
-      Polygon {i}
+      Polygon {i} ({feature.geometry.coordinates.flat().length-1} vertices)
       <IconButton
         aria-label="delete-shape"
         size="small"

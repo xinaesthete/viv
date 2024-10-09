@@ -99,10 +99,8 @@ function useKeyboardShortcuts() {
   const { undo, redo } = useEditState(({ undo, redo }) => ({ undo, redo }));
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-
       // Detect Undo: Ctrl+Z or Cmd+Z
-      if ((event.ctrlKey || (isMac && event.metaKey)) && event.key === 'z') {
+      if ((event.ctrlKey || event.metaKey) && event.key === 'z') {
         if (event.shiftKey) {
           redo(); // Ctrl+Shift+Z (or Cmd+Shift+Z)
         } else {
@@ -112,7 +110,7 @@ function useKeyboardShortcuts() {
       }
 
       // Detect Redo: Ctrl+Y (for non-Mac platforms)
-      if (event.ctrlKey && event.key === 'y' && !isMac) {
+      if (event.ctrlKey && event.key === 'y') {
         redo();
         event.preventDefault();
       }

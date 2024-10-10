@@ -18,6 +18,7 @@ import TranslateModeEx from './translate-mode-exp';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import JsonView from "react18-json-view";
 import FeatureThumbnail from "./FeatureThumbnail";
+import type { Feature } from "@turf/helpers";
 
 function DownloadButton() {
   const metadata = useMetadata() as unknown as { Name?: string };
@@ -96,32 +97,38 @@ function UndoPanel() {
   )
 }
 
-function FeatureView() {
+function FeatureView({feature, i}: {feature: Feature, i: number}) {
   const { features, setFeatures, commitEdit } = useEditState(({ features, setFeatures, commitEdit }) => ({ features, setFeatures, commitEdit }));
   const { setSelectedFeatureIndexes } = useEditState(({ setSelectedFeatureIndexes }) => ({ setSelectedFeatureIndexes }));
   return (
+    <Grid key={feature.id}
+    onMouseEnter={() => setSelectedFeatureIndexes([i])}
+    onMouseLeave={() => setSelectedFeatureIndexes([])}
+    container direction="row" justifyContent="space-around"
+    >
+      Polygon {i} <FeatureThumbnail feature={feature} />
+      <IconButton
+      aria-label="delete-shape"
+      size="small"
+      onClick={() => {
+        const newArr = features.features.toSpliced(i, 1);
+        setFeatures({...features, features: newArr});
+        commitEdit('deleteShape');
+      }}
+      >
+        <HighlightOffIcon fontSize="small" />
+      </IconButton>
+    </Grid>
+  )
+}
+
+function FeaturesView() {
+  const { features } = useEditState(({ features }) => ({ features }));
+  return (
     <Grid direction="column">
-    {
-      features.features.map((feature, i) => (
-        <Grid key={feature.id}
-        onMouseEnter={() => setSelectedFeatureIndexes([i])}
-        onMouseLeave={() => setSelectedFeatureIndexes([])}
-        container direction="row" justifyContent="space-around"
-        >
-          Polygon {i} <FeatureThumbnail feature={feature} />
-          <IconButton
-            aria-label="delete-shape"
-            size="small"
-            onClick={() => {
-              const newArr = features.features.toSpliced(i, 1);
-              setFeatures({...features, features: newArr});
-              commitEdit('deleteShape');
-            }}
-            >
-              <HighlightOffIcon fontSize="small" />
-            </IconButton>
-        </Grid>
-      ))}
+    {features.features.map(
+      (feature, i) => <FeatureView key={feature.id} feature={feature} i={i} />
+    )}
   </Grid>
   )
 }
@@ -136,7 +143,7 @@ export default function EditableLayerControls() {
     <Box position="absolute" left={0} top={0} m={1} p={1} style={{ color: "white" }} >
       <ModeSelector />
       <Divider />
-      <FeatureView />
+      <FeaturesView />
       <UndoPanel />
       <Divider />
       <DownloadButton />

@@ -99,26 +99,31 @@ function UndoPanel() {
 function FeatureView() {
   const { features, setFeatures, commitEdit } = useEditState(({ features, setFeatures, commitEdit }) => ({ features, setFeatures, commitEdit }));
   const { setSelectedFeatureIndexes } = useEditState(({ setSelectedFeatureIndexes }) => ({ setSelectedFeatureIndexes }));
-  return features.features.map((feature, i) => (
-    // biome-ignore lint/suspicious/noArrayIndexKey: may consider having ids for features.
-    <Grid key={i}
-    onMouseEnter={() => setSelectedFeatureIndexes([i])}
-    onMouseLeave={() => setSelectedFeatureIndexes([])}
-    >
-      Polygon {i} <FeatureThumbnail feature={feature} />
-      <IconButton
-        aria-label="delete-shape"
-        size="small"
-        onClick={() => {
-          const newArr = features.features.toSpliced(i, 1);
-          setFeatures({...features, features: newArr});
-          commitEdit('deleteShape');
-        }}
+  return (
+    <Grid direction="column">
+    {
+      features.features.map((feature, i) => (
+        <Grid key={feature.id}
+        onMouseEnter={() => setSelectedFeatureIndexes([i])}
+        onMouseLeave={() => setSelectedFeatureIndexes([])}
+        container direction="row" justifyContent="space-around"
         >
-          <HighlightOffIcon fontSize="small" />
-        </IconButton>
-    </Grid>
-  ));
+          Polygon {i} <FeatureThumbnail feature={feature} />
+          <IconButton
+            aria-label="delete-shape"
+            size="small"
+            onClick={() => {
+              const newArr = features.features.toSpliced(i, 1);
+              setFeatures({...features, features: newArr});
+              commitEdit('deleteShape');
+            }}
+            >
+              <HighlightOffIcon fontSize="small" />
+            </IconButton>
+        </Grid>
+      ))}
+  </Grid>
+  )
 }
 
 function GeoJSON() {
@@ -128,7 +133,7 @@ function GeoJSON() {
 
 export default function EditableLayerControls() {
   return (
-    <Box position="absolute" left={0} top={0} m={1} style={{ color: "white" }} >
+    <Box position="absolute" left={0} top={0} m={1} p={1} style={{ color: "white" }} >
       <ModeSelector />
       <Divider />
       <FeatureView />

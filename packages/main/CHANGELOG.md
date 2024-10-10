@@ -1,5 +1,22 @@
 # @hms-dbmi/viv
 
+## 1.0.0
+
+### Major Changes
+
+- experimental build of fork with updated deck.gl/luma.gl
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @vivjs-experimental/extensions@1.0.0
+  - @vivjs-experimental/constants@1.0.0
+  - @vivjs-experimental/loaders@1.0.0
+  - @vivjs-experimental/viewers@1.0.0
+  - @vivjs-experimental/layers@1.0.0
+  - @vivjs-experimental/types@1.0.0
+  - @vivjs-experimental/views@1.0.0
+
 ## 0.16.1
 
 ### Patch Changes
@@ -15,9 +32,9 @@
   This release extends Viv's multifile OME-TIFF data-loading capabilities to multiscale TIFFs as well. The `loadOmeTiff` utility now recognizes and loads multiresolution images described in a `companion.ome` metadata file.
 
   ```js
-  import { loadOmeTiff } from '@vivjs/loaders';
+  import { loadOmeTiff } from "@vivjs/loaders";
 
-  let loader = await loadOmeTiff('http://localhost:8080/data.companion.ome');
+  let loader = await loadOmeTiff("http://localhost:8080/data.companion.ome");
   ```
 
 ### Patch Changes

@@ -1,5 +1,5 @@
 {
-  "name": "@vivjs/layers",
+  "name": "@vivjs-experimental/layers",
   "version": "0.16.1",
   "author": "Ilan Gold",
   "repository": {
@@ -35,10 +35,10 @@
   "dependencies": {
     "@math.gl/core": "catalog:",
     "@math.gl/culling": "catalog:",
-    "@vivjs/constants": "workspace:*",
-    "@vivjs/extensions": "workspace:*",
-    "@vivjs/loaders": "workspace:*",
-    "@vivjs/types": "workspace:*"
+    "@vivjs-experimental/constants": "workspace:*",
+    "@vivjs-experimental/extensions": "workspace:*",
+    "@vivjs-experimental/loaders": "workspace:*",
+    "@vivjs-experimental/types": "workspace:*"
   },
   "unbuild": {
     "entries": [

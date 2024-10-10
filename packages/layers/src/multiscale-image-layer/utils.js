@@ -1,4 +1,4 @@
-import { getImageSize, isInterleaved } from '@vivjs/loaders';
+import { getImageSize, isInterleaved } from '@vivjs-experimental/loaders';
 
 import BitmapLayer from '../bitmap-layer';
 import XRLayer from '../xr-layer/xr-layer';

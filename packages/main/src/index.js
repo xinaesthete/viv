@@ -9,14 +9,14 @@ export {
   OverviewLayer,
   VolumeLayer,
   BitmapLayer
-} from '@vivjs/layers';
+} from '@vivjs-experimental/layers';
 
 export {
   VivViewer,
   PictureInPictureViewer,
   SideBySideViewer,
   VolumeViewer
-} from '@vivjs/viewers';
+} from '@vivjs-experimental/viewers';
 
 export {
   VivView,
@@ -27,15 +27,15 @@ export {
   getDefaultInitialViewState,
   DETAIL_VIEW_ID,
   OVERVIEW_VIEW_ID
-} from '@vivjs/views';
+} from '@vivjs-experimental/views';
 
 export {
   DTYPE_VALUES,
   MAX_CHANNELS,
   COLORMAPS,
   RENDERING_MODES
-} from '@vivjs/constants';
+} from '@vivjs-experimental/constants';
 
-export * from '@vivjs/extensions';
+export * from '@vivjs-experimental/extensions';
 
-export * from '@vivjs/loaders';
+export * from '@vivjs-experimental/loaders';

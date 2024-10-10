@@ -137,11 +137,11 @@ importers:
       '@deck.gl/core':
         specifier: 'catalog:'
         version: 9.0.28
-      '@vivjs/constants':
+      '@vivjs-experimental/constants':
         specifier: workspace:*
         version: link:../constants
     devDependencies:
-      '@vivjs/types':
+      '@vivjs-experimental/types':
         specifier: workspace:*
         version: link:../types
       glsl-colormap:
@@ -180,22 +180,22 @@ importers:
       '@math.gl/culling':
         specifier: 'catalog:'
         version: 4.0.1
-      '@vivjs/constants':
+      '@vivjs-experimental/constants':
         specifier: workspace:*
         version: link:../constants
-      '@vivjs/extensions':
+      '@vivjs-experimental/extensions':
         specifier: workspace:*
         version: link:../extensions
-      '@vivjs/loaders':
+      '@vivjs-experimental/loaders':
         specifier: workspace:*
         version: link:../loaders
-      '@vivjs/types':
+      '@vivjs-experimental/types':
         specifier: workspace:*
         version: link:../types
 
   packages/loaders:
     dependencies:
-      '@vivjs/types':
+      '@vivjs-experimental/types':
         specifier: workspace:*
         version: link:../types
       geotiff:
@@ -220,31 +220,31 @@ importers:
 
   packages/main:
     dependencies:
-      '@vivjs/constants':
+      '@vivjs-experimental/constants':
         specifier: workspace:*
         version: link:../constants
-      '@vivjs/extensions':
+      '@vivjs-experimental/extensions':
         specifier: workspace:*
         version: link:../extensions
-      '@vivjs/layers':
+      '@vivjs-experimental/layers':
         specifier: workspace:*
         version: link:../layers
-      '@vivjs/loaders':
+      '@vivjs-experimental/loaders':
         specifier: workspace:*
         version: link:../loaders
-      '@vivjs/types':
+      '@vivjs-experimental/types':
         specifier: workspace:*
         version: link:../types
-      '@vivjs/viewers':
+      '@vivjs-experimental/viewers':
         specifier: workspace:*
         version: link:../viewers
-      '@vivjs/views':
+      '@vivjs-experimental/views':
         specifier: workspace:*
         version: link:../views
 
   packages/types:
     dependencies:
-      '@vivjs/constants':
+      '@vivjs-experimental/constants':
         specifier: workspace:*
         version: link:../constants
       math.gl:
@@ -256,13 +256,13 @@ importers:
       '@deck.gl/react':
         specifier: 'catalog:'
         version: 9.0.28(@deck.gl/core@9.0.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@vivjs/constants':
+      '@vivjs-experimental/constants':
         specifier: workspace:*
         version: link:../constants
-      '@vivjs/extensions':
+      '@vivjs-experimental/extensions':
         specifier: workspace:*
         version: link:../extensions
-      '@vivjs/views':
+      '@vivjs-experimental/views':
         specifier: workspace:*
         version: link:../views
       fast-deep-equal:
@@ -283,10 +283,10 @@ importers:
       '@math.gl/core':
         specifier: 'catalog:'
         version: 4.0.1
-      '@vivjs/layers':
+      '@vivjs-experimental/layers':
         specifier: workspace:*
         version: link:../layers
-      '@vivjs/loaders':
+      '@vivjs-experimental/loaders':
         specifier: workspace:*
         version: link:../loaders
       math.gl:
@@ -295,7 +295,7 @@ importers:
 
   sites/avivator:
     dependencies:
-      '@hms-dbmi/viv':
+      '@hms-dbmi/viv-experimental':
         specifier: workspace:*
         version: link:../../packages/main
       '@material-ui/core':
@@ -338,7 +338,7 @@ importers:
 
   sites/docs:
     dependencies:
-      '@hms-dbmi/viv':
+      '@hms-dbmi/viv-experimental':
         specifier: workspace:*
         version: link:../../packages/main
       '@rollup/plugin-sucrase':

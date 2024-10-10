@@ -2,9 +2,9 @@ import {
   DEFAULT_COLOR_OFF,
   MAX_CHANNELS,
   MAX_COLOR_INTENSITY
-} from '@vivjs/constants';
+} from '@vivjs-experimental/constants';
 
-/** @typedef {import('@vivjs/types').Color} Color */
+/** @typedef {import('@vivjs-experimental/types').Color} Color */
 
 /**
  * @template T

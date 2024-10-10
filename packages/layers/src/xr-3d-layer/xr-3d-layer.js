@@ -35,7 +35,7 @@ import { Plane } from '@math.gl/culling';
 import fs from './xr-3d-layer-fragment.glsl';
 import vs from './xr-3d-layer-vertex.glsl';
 
-import { ColorPalette3DExtensions } from '@vivjs/extensions';
+import { ColorPalette3DExtensions } from '@vivjs-experimental/extensions';
 import { getDtypeValues, padContrastLimits, padWithDefault } from '../utils';
 
 const channelsModule = {
@@ -125,7 +125,7 @@ function getRenderingFromExtensions(extensions) {
  */
 
 /**
- * @type {{ new <S extends string[]>(...props: import('@vivjs/types').Viv<LayerProps>[]) }}
+ * @type {{ new <S extends string[]>(...props: import('@vivjs-experimental/types').Viv<LayerProps>[]) }}
  * @ignore
  */
 const XR3DLayer = class extends Layer {

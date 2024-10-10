@@ -3,7 +3,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import React from 'react';
 
-import { RENDERING_MODES } from '@hms-dbmi/viv';
+import { RENDERING_MODES } from '@hms-dbmi/viv-experimental';
 
 function RenderingModeSelect({ value, handleChange, disabled }) {
   return (

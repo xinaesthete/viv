@@ -1,8 +1,8 @@
 import { COORDINATE_SYSTEM, CompositeLayer } from '@deck.gl/core';
 import { GL } from '@luma.gl/constants';
 
-import { ColorPaletteExtension } from '@vivjs/extensions';
-import { SIGNAL_ABORTED, isInterleaved } from '@vivjs/loaders';
+import { ColorPaletteExtension } from '@vivjs-experimental/extensions';
+import { SIGNAL_ABORTED, isInterleaved } from '@vivjs-experimental/loaders';
 import BitmapLayer from './bitmap-layer';
 import XRLayer from './xr-layer/xr-layer';
 
@@ -55,7 +55,7 @@ const defaultProps = {
  */
 
 /**
- * @type {{ new <S extends string[]>(...props: import('@vivjs/types').Viv<LayerProps, S>[]) }}
+ * @type {{ new <S extends string[]>(...props: import('@vivjs-experimental/types').Viv<LayerProps, S>[]) }}
  * @ignore
  */
 const ImageLayer = class extends CompositeLayer {

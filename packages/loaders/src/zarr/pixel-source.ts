@@ -9,7 +9,7 @@ import type {
   PixelSourceSelection,
   RasterSelection,
   TileSelection
-} from '@vivjs/types';
+} from '@vivjs-experimental/types';
 
 const DTYPE_LOOKUP = {
   u1: 'Uint8',

@@ -2,8 +2,8 @@ import { CompositeLayer } from '@deck.gl/core';
 import { GL } from '@luma.gl/constants';
 import { Matrix4 } from '@math.gl/core';
 
-import { ColorPaletteExtension } from '@vivjs/extensions';
-import { SIGNAL_ABORTED, getImageSize, isInterleaved } from '@vivjs/loaders';
+import { ColorPaletteExtension } from '@vivjs-experimental/extensions';
+import { SIGNAL_ABORTED, getImageSize, isInterleaved } from '@vivjs-experimental/loaders';
 import ImageLayer from '../image-layer';
 import MultiscaleImageLayerBase from './multiscale-image-layer-base';
 
@@ -46,7 +46,7 @@ const defaultProps = {
  */
 
 /**
- * @type {{ new <S extends string[]>(...props: import('@vivjs/types').Viv<LayerProps, S>[]) }}
+ * @type {{ new <S extends string[]>(...props: import('@vivjs-experimental/types').Viv<LayerProps, S>[]) }}
  * @ignore
  */
 const MultiscaleImageLayer = class extends CompositeLayer {

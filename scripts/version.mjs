@@ -44,8 +44,8 @@ function updateContentsWithAffectedPackages(changeset) {
  *
  * ```md
  * ---
- *  "@vivjs/loaders": minor
- *  "@vivjs/constants": patch
+ *  "@vivjs-experimental/loaders": minor
+ *  "@vivjs-experimental/constants": patch
  * ---
  *
  *  Fixes a bug in loaders.
@@ -103,7 +103,7 @@ function postChangesetsVersion() {
   const newChangelog = contents
     .split('\n')
     .filter(line => !line.startsWith('- Updated dependencies'))
-    .filter(line => !line.startsWith('  - @vivjs/'))
+    .filter(line => !line.startsWith('  - @vivjs-experimental/'))
     .join('\n');
   fs.writeFileSync(mainChangelogPath, newChangelog);
 

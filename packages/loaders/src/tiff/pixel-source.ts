@@ -11,7 +11,7 @@ import type {
   RasterSelection,
   SupportedDtype,
   TileSelection
-} from '@vivjs/types';
+} from '@vivjs-experimental/types';
 import type Pool from './lib/Pool';
 
 type ReadRastersOptions = NonNullable<

@@ -39,7 +39,7 @@ const defaultProps = {
  * @property {'nearest'|'linear'=} interpolation The `minFilter` and `magFilter` for luma.gl rendering (see https://luma.gl/docs/api-reference/core/resources/sampler#texture-magnification-filter) - default is 'nearest'
  */
 /**
- * @type {{ new (...props: import('@vivjs/types').Viv<LayerProps>[]) }}
+ * @type {{ new (...props: import('@vivjs-experimental/types').Viv<LayerProps>[]) }}
  * @ignore
  */
 const XRLayer = class extends Layer {

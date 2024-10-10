@@ -4,7 +4,7 @@ import Select from '@material-ui/core/Select';
 import React from 'react';
 import shallow from 'zustand/shallow';
 
-import { RENDERING_MODES } from '@hms-dbmi/viv';
+import { RENDERING_MODES } from '@hms-dbmi/viv-experimental';
 import { useImageSettingsStore, useViewerStore } from '../../../state';
 
 const renderingOptions = Object.values(RENDERING_MODES);

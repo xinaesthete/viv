@@ -1,6 +1,6 @@
 import { Controller, OrthographicView } from '@deck.gl/core';
-import { OverviewLayer, makeBoundingBox } from '@vivjs/layers';
-import { getImageSize } from '@vivjs/loaders';
+import { OverviewLayer, makeBoundingBox } from '@vivjs-experimental/layers';
+import { getImageSize } from '@vivjs-experimental/loaders';
 
 import VivView from './VivView';
 import { getVivId } from './utils';

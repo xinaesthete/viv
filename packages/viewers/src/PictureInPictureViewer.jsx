@@ -1,11 +1,11 @@
-import { ColorPaletteExtension } from '@vivjs/extensions';
+import { ColorPaletteExtension } from '@vivjs-experimental/extensions';
 import {
   DETAIL_VIEW_ID,
   DetailView,
   OVERVIEW_VIEW_ID,
   OverviewView,
   getDefaultInitialViewState
-} from '@vivjs/views';
+} from '@vivjs-experimental/views';
 import * as React from 'react';
 import VivViewer from './VivViewer';
 

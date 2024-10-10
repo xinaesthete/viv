@@ -3,7 +3,7 @@ import type { ZarrArray } from 'zarr';
 import type { OmeXml } from '../../omexml';
 import { getLabels, isInterleaved, prevPowerOf2 } from '../../utils';
 
-import type { Labels } from '@vivjs/types';
+import type { Labels } from '@vivjs-experimental/types';
 import type { Axis, RootAttrs } from '../ome-zarr';
 
 /*

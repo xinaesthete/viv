@@ -116,7 +116,7 @@ class BitmapLayerWrapper extends BaseBitmapLayer {
  * @property {String=} id Unique identifier for this layer.
  */
 /**
- * @type {{ new (...props: import('@vivjs/types').Viv<LayerProps>[]) }}
+ * @type {{ new (...props: import('@vivjs-experimental/types').Viv<LayerProps>[]) }}
  * @ignore
  */
 const BitmapLayer = class extends CompositeLayer {

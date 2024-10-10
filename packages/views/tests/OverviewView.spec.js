@@ -1,4 +1,4 @@
-import { OverviewLayer } from '@vivjs/layers';
+import { OverviewLayer } from '@vivjs-experimental/layers';
 import test from 'tape-catch';
 import { DETAIL_VIEW_ID, OVERVIEW_VIEW_ID, OverviewView } from '../src';
 import {

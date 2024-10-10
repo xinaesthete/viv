@@ -1,7 +1,7 @@
 import { PolygonLayer } from '@deck.gl/layers';
 import test from 'tape-catch';
 
-import { ImageLayer, MultiscaleImageLayer, ScaleBarLayer } from '@vivjs/layers';
+import { ImageLayer, MultiscaleImageLayer, ScaleBarLayer } from '@vivjs-experimental/layers';
 import { SideBySideView } from '../src';
 import { defaultArguments, generateViewTests } from './VivView.spec';
 

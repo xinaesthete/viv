@@ -1,4 +1,4 @@
-import type { Labels, PixelSource } from '@vivjs/types';
+import type { Labels, PixelSource } from '@vivjs-experimental/types';
 import quickselect from 'quickselect';
 import type { TypedArray } from 'zarr';
 import type { OmeXml } from './omexml';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { DTYPE_VALUES } from '@hms-dbmi/viv';
+import { DTYPE_VALUES } from '@hms-dbmi/viv-experimental';
 import Checkbox from '@material-ui/core/Checkbox';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';

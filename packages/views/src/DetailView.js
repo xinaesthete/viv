@@ -1,4 +1,4 @@
-import { ScaleBarLayer } from '@vivjs/layers';
+import { ScaleBarLayer } from '@vivjs-experimental/layers';
 import { OVERVIEW_VIEW_ID } from './OverviewView';
 import VivView from './VivView';
 import { getImageLayer, getVivId } from './utils';

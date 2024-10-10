@@ -1,5 +1,5 @@
-import { ColorPaletteExtension } from '@vivjs/extensions';
-import { SideBySideView, getDefaultInitialViewState } from '@vivjs/views';
+import { ColorPaletteExtension } from '@vivjs-experimental/extensions';
+import { SideBySideView, getDefaultInitialViewState } from '@vivjs-experimental/views';
 import * as React from 'react';
 import VivViewer from './VivViewer';
 

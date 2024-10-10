@@ -1,4 +1,4 @@
-import { MultiscaleImageLayer, ScaleBarLayer } from '@vivjs/layers';
+import { MultiscaleImageLayer, ScaleBarLayer } from '@vivjs-experimental/layers';
 import test from 'tape-catch';
 import { DETAIL_VIEW_ID, DetailView } from '../src';
 import { defaultArguments, generateViewTests } from './VivView.spec';

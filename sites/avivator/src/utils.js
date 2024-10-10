@@ -11,7 +11,7 @@ import {
   loadMultiTiff,
   loadOmeTiff,
   loadOmeZarr
-} from '@hms-dbmi/viv';
+} from '@hms-dbmi/viv-experimental';
 
 import { GLOBAL_SLIDER_DIMENSION_FIELDS } from './constants';
 

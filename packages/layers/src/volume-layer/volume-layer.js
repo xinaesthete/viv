@@ -1,7 +1,7 @@
 import { COORDINATE_SYSTEM, CompositeLayer } from '@deck.gl/core';
 import { GL } from '@luma.gl/constants';
 import { Matrix4 } from '@math.gl/core';
-import { ColorPalette3DExtensions } from '@vivjs/extensions';
+import { ColorPalette3DExtensions } from '@vivjs-experimental/extensions';
 
 import { getPhysicalSizeScalingMatrix } from '../utils';
 import XR3DLayer from '../xr-3d-layer/xr-3d-layer';
@@ -61,7 +61,7 @@ const defaultProps = {
  */
 
 /**
- * @type {{ new <S extends string[]>(...props: import('@vivjs/types').Viv<LayerProps, S>[]) }}
+ * @type {{ new <S extends string[]>(...props: import('@vivjs-experimental/types').Viv<LayerProps, S>[]) }}
  * @ignore
  */
 const VolumeLayer = class extends CompositeLayer {

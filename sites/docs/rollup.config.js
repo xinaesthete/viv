@@ -7,7 +7,7 @@ import * as url from 'node:url';
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 export default {
-  input: path.resolve(__dirname, './node_modules/@hms-dbmi/viv-experimental/src/index.js'),
+  input: path.resolve(__dirname, './node_modules/@vivjs-experimental/viv/src/index.js'),
   output: {
     file: path.resolve(__dirname, './dist/index.js'),
     format: 'esm'

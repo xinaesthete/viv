@@ -4,7 +4,7 @@ import {
   PictureInPictureViewer,
   SideBySideViewer,
   VolumeViewer
-} from '@hms-dbmi/viv-experimental';
+} from '@vivjs-experimental/viv';
 import debounce from 'lodash/debounce';
 import React from 'react';
 import shallow from 'zustand/shallow';

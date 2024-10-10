@@ -4,7 +4,7 @@
     "@svitejs/changesets-changelog-github-compact",
     { "repo": "xinaesthete/viv" }
   ],
-  "fixed": [["@hms-dbmi/viv-experimental", "@vivjs-experimental/*"]],
+  "fixed": [["@vivjs-experimental/viv", "@vivjs-experimental/*"]],
   "commit": false,
   "access": "public",
   "baseBranch": "viv_publishfork",

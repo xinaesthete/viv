@@ -6,7 +6,7 @@ import { createStyles, makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import shallow from 'zustand/shallow';
 
-import { getDefaultInitialViewState } from '@hms-dbmi/viv-experimental';
+import { getDefaultInitialViewState } from '@vivjs-experimental/viv';
 import {
   useImageSettingsStore,
   useLoader,

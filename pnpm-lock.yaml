@@ -295,7 +295,7 @@ importers:
 
   sites/avivator:
     dependencies:
-      '@hms-dbmi/viv-experimental':
+      '@vivjs-experimental/viv':
         specifier: workspace:*
         version: link:../../packages/main
       '@material-ui/core':
@@ -338,7 +338,7 @@ importers:
 
   sites/docs:
     dependencies:
-      '@hms-dbmi/viv-experimental':
+      '@vivjs-experimental/viv':
         specifier: workspace:*
         version: link:../../packages/main
       '@rollup/plugin-sucrase':

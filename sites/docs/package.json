@@ -7,7 +7,7 @@
     "bundle": "rollup -c"
   },
   "dependencies": {
-    "@hms-dbmi/viv-experimental": "workspace:*",
+    "@vivjs-experimental/viv": "workspace:*",
     "@rollup/plugin-sucrase": "^4.0.4"
   },
   "devDependencies": {

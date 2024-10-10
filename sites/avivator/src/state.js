@@ -1,6 +1,6 @@
 import create from 'zustand';
 
-import { RENDERING_MODES } from '@hms-dbmi/viv-experimental';
+import { RENDERING_MODES } from '@vivjs-experimental/viv';
 
 const captialize = string => string.charAt(0).toUpperCase() + string.slice(1);
 

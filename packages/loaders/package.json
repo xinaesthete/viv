@@ -4,7 +4,7 @@
   "author": "Ilan Gold",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hms-dbmi/viv.git"
+    "url": "git+https://github.com/xinaesthete/viv.git#viv_publishfork"
   },
   "license": "MIT",
   "homepage": "https://github.com/hms-dbmi/viv#readme",

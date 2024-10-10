@@ -24,6 +24,8 @@ export default function FeatureThumbnail({feature}: {feature: Feature}) {
     return { minX, minY, maxX, maxY };
   }, [coords]);
   if (!Number.isFinite(minX)) return null;
+  const strokeWidthPx = 1;
+  const strokeWidth = strokeWidthPx * Math.max(maxX-minX, maxY-minY) / 20;
   return (
     <svg
       viewBox={`${minX} ${minY} ${maxX - minX} ${maxY - minY}`}
@@ -31,7 +33,10 @@ export default function FeatureThumbnail({feature}: {feature: Feature}) {
       height="20"
       >
       <title>Feature Thumbnail</title>
-      <polygon points={coords.map(c => c.join(",")).join(" ")} fill="white" stroke="blue"  />
+      <polygon points={coords.map(c => c.join(",")).join(" ")}
+      fill="white" fillOpacity={0.2}
+      stroke="white" strokeOpacity={1} strokeWidth={strokeWidth}
+      />
     </svg>
   )
 }

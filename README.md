@@ -1,3 +1,8 @@
+# Experimental version
+
+Pending merge and release of PR for deck.gl & luma.gl 9 update, this is a temporary fork with enough changes to publish onto npm.
+
+
 # Viv [![npm version](https://badge.fury.io/js/%40hms-dbmi%2Fviv.svg)](https://badge.fury.io/js/%40hms-dbmi%2Fviv) [![package documenation](https://img.shields.io/badge/package-documentation-blue)](http://viv.gehlenborglab.org)
 
 A WebGL-powered toolkit for interactive visualization of high-resolution, multiplexed bioimaging datasets.

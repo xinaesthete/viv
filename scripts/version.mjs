@@ -6,7 +6,7 @@ import * as url from 'node:url';
 import matter from 'gray-matter';
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
-const mainPackage = '@hms-dbmi/viv';
+const mainPackage = '@hms-dbmi/viv-experimental';
 
 /**
  * @param {matter.GrayMatterFile<string>} changeset

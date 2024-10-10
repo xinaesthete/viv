@@ -1,11 +1,11 @@
 {
-  "name": "@vivjs/monorepo",
+  "name": "@vivjs-experimental/monorepo",
   "version": "0.14.2",
   "author": "Ilan Gold",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hms-dbmi/viv.git"
+    "url": "git+https://github.com/xinaesthete/viv.git#viv_publishfork"
   },
   "bugs": {
     "url": "https://github.com/hms-dbmi/viv/issues"

@@ -19,6 +19,7 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import JsonView from "react18-json-view";
 import FeatureThumbnail from "./FeatureThumbnail";
 import type { Feature } from "@turf/helpers";
+import { DrawRectangleByDraggingMode } from "./draw-rectangle-by-dragging";
 
 function DownloadButton() {
   const metadata = useMetadata() as unknown as { Name?: string };
@@ -49,12 +50,15 @@ function ModeSelector() {
   ]));
   const setDrawDrag = () => setMode(new DrawPolygonByDraggingMode());
   const setDraw = () => setMode(new DrawPolygonMode());
+  const setRect = () => setMode(new DrawRectangleByDraggingMode());
+  const drawLasso = mode instanceof DrawPolygonByDraggingMode && !(mode instanceof DrawRectangleByDraggingMode);
   const drawPoly = mode instanceof DrawPolygonMode && !(mode instanceof DrawPolygonByDraggingMode);
   return (
     <>
     <Button variant={mode instanceof CompositeMode ? "outlined" : undefined} onClick={setEditMode}>edit</Button>
-    <Button variant={mode instanceof DrawPolygonByDraggingMode ? "outlined" : undefined} onClick={setDrawDrag}>lasso</Button>
+    <Button variant={drawLasso ? "outlined" : undefined} onClick={setDrawDrag}>lasso</Button>
     <Button variant={drawPoly ? "outlined" : undefined} onClick={setDraw}>draw</Button>
+    <Button variant={mode instanceof DrawRectangleByDraggingMode ? "outlined" : undefined} onClick={setRect}>rect</Button>
     </>
   )
 }

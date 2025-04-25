@@ -1,4 +1,4 @@
-# @vivjs/loaders
+# @vivjs-experimental/loaders
 
 ## 1.0.0
 
@@ -16,18 +16,18 @@
 ### Patch Changes
 
 - Updated dependencies []:
-  - @vivjs/types@0.16.1
+  - @vivjs-experimental/types@0.16.1
 
 ## 0.16.0
 
 ### Patch Changes
 
 - Updated dependencies []:
-  - @vivjs/types@0.16.0
+  - @vivjs-experimental/types@0.16.0
 
 ## 0.15.1
 
 ### Patch Changes
 
 - Updated dependencies []:
-  - @vivjs/types@0.15.1
+  - @vivjs-experimental/types@0.15.1

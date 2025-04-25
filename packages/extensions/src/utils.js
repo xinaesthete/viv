@@ -12,7 +12,7 @@ import {
  * @param {T} defaultValue
  * @param {number} padWidth
  *
- * @TODO copied from `@vivjs/layers` to avoid circular deps
+ * @TODO copied from `@vivjs-experimental/layers` to avoid circular deps
  */
 export function padWithDefault(arr, defaultValue, padWidth) {
   for (let i = 0; i < padWidth; i += 1) {

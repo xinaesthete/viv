@@ -1,4 +1,4 @@
-# @hms-dbmi/viv
+# @vivjs-experimental/viv
 
 ## 1.0.0
 
@@ -8,31 +8,23 @@
 
 ### Patch Changes
 
-- Updated dependencies []:
-  - @vivjs-experimental/extensions@1.0.0
-  - @vivjs-experimental/constants@1.0.0
-  - @vivjs-experimental/loaders@1.0.0
-  - @vivjs-experimental/viewers@1.0.0
-  - @vivjs-experimental/layers@1.0.0
-  - @vivjs-experimental/types@1.0.0
-  - @vivjs-experimental/views@1.0.0
 
 ## 0.16.1
 
 ### Patch Changes
 
-- Relax `IFD` and `PlaneCount` strictness in OME-XML validation (`@vivjs/loaders`) ([#783](https://github.com/hms-dbmi/viv/pull/783))
+- Relax `IFD` and `PlaneCount` strictness in OME-XML validation (`@vivjs-experimental/loaders`) ([#783](https://github.com/hms-dbmi/viv/pull/783))
 
 ## 0.16.0
 
 ### Minor Changes
 
-- feat: Support multiscale multifile-OME-TIFFs (`@vivjs/loaders`) ([#748](https://github.com/hms-dbmi/viv/pull/748))
+- feat: Support multiscale multifile-OME-TIFFs (`@vivjs-experimental/loaders`) ([#748](https://github.com/hms-dbmi/viv/pull/748))
 
   This release extends Viv's multifile OME-TIFF data-loading capabilities to multiscale TIFFs as well. The `loadOmeTiff` utility now recognizes and loads multiresolution images described in a `companion.ome` metadata file.
 
   ```js
-  import { loadOmeTiff } from "@vivjs/loaders";
+  import { loadOmeTiff } from "@vivjs-experimental/loaders";
 
   let loader = await loadOmeTiff("http://localhost:8080/data.companion.ome");
   ```
@@ -43,19 +35,19 @@
 
 ### Patch Changes
 
-- Support multifile OME-TIFF in `loadOmeTiff` (`@vivjs/loaders`) ([#740](https://github.com/hms-dbmi/viv/pull/740))
+- Support multifile OME-TIFF in `loadOmeTiff` (`@vivjs-experimental/loaders`) ([#740](https://github.com/hms-dbmi/viv/pull/740))
 
 ## 0.15.0
 
 ### Minor Changes
 
-- 53e6014: Bump `deck.gl` to v8.8.27 and `luma.gl` to v8.5.21 (`@vivjs/extensions`, `@vivjs/constants`, `@vivjs/viewers`, `@vivjs/layers`, `@vivjs/views`)
+- 53e6014: Bump `deck.gl` to v8.8.27 and `luma.gl` to v8.5.21 (`@vivjs-experimental/extensions`, `@vivjs-experimental/constants`, `@vivjs-experimental/viewers`, `@vivjs-experimental/layers`, `@vivjs-experimental/views`)
 
 ### Patch Changes
 
-- 51aca92: fix: Throw error for missing OME-XML in `loadBioformatsZarr` (`@vivjs/loaders`)
-- a1a8007: feat: Set default PhysicalSizeUnit to µm (`@vivjs/loaders`)
-- 43f659a: fix: Allow `unknown` OME-XML Description by default (`@vivjs/loaders`)
+- 51aca92: fix: Throw error for missing OME-XML in `loadBioformatsZarr` (`@vivjs-experimental/loaders`)
+- a1a8007: feat: Set default PhysicalSizeUnit to µm (`@vivjs-experimental/loaders`)
+- 43f659a: fix: Allow `unknown` OME-XML Description by default (`@vivjs-experimental/loaders`)
 
 ## 0.14.2
 
@@ -86,7 +78,7 @@
 - Bump `gl` to v6 and move to Node.js 18 in CI.
 - Narrow required interface for `ZarrPixelSource`.
 - Update dev dependencies
-- Drop `fast-xml-parser` dependency in `@vivjs/loaders`
+- Drop `fast-xml-parser` dependency in `@vivjs-experimental/loaders`
 
 ## 0.13.8
 

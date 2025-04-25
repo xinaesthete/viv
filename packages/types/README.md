@@ -1,11 +1,11 @@
-# @vivjs/types
+# @vivjs-experimental/types
 
 > Basic types used by Viv
 
 ## Installation
 
 ```sh
-npm install @vivjs/types
+npm install @vivjs-experimental/types
 ```
 
 ## License

@@ -1,4 +1,4 @@
-# @vivjs/constants
+# @vivjs-experimental/constants
 
 ## 1.0.0
 

@@ -1,4 +1,4 @@
-# @vivjs/constants
+# @vivjs-experimental/constants
 
 > **Warning** Internal module
 
@@ -7,7 +7,7 @@
 ## Installation
 
 ```sh
-npm install @vivjs/constants
+npm install @vivjs-experimental/constants
 ```
 
 ## License

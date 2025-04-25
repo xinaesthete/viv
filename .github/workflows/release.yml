@@ -41,7 +41,7 @@ jobs:
       #     aws s3 cp --recursive sites/docs/dist s3://viv.gehlenborglab.org
       #     aws cloudfront create-invalidation --distribution-id E204VEQ9XF37EF --paths "/*"
 
-      - name: "Delete redundant @vivjs/* tags and releases"
+      - name: "Delete redundant @vivjs-experimental/* tags and releases"
         # We have "fixed" the versioning for all @vivjs packages,
         # meaning all packages get the same changes. This creates
         # a lot of noise when making releases since every package

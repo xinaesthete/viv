@@ -55,9 +55,9 @@ function updateContentsWithAffectedPackages(changeset) {
  *
  * ```md
  * ---
- *  "@hms-dbmi/viv": minor
+ *  "@vivjs-experimental/viv": minor
  * ---
- *  Fixes a bug in loaders. (`@vivjs/loaders`, `@vivjs/constants`)
+ *  Fixes a bug in loaders. (`@vivjs-experimental/loaders`, `@vivjs-experimental/constants`)
  * ```
  *
  */

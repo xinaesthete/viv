@@ -1,5 +1,12 @@
 # @vivjs-experimental/viv
 
+## 1.0.1
+
+### Patch Changes
+
+- update to deck & luma 9.1 (`@vivjs-experimental/viv`, `@vivjs-experimental/constants`, `@vivjs-experimental/extensions`, `@vivjs-experimental/layers`, `@vivjs-experimental/loaders`, `@vivjs-experimental/types`, `@vivjs-experimental/viewers`, `@vivjs-experimental/views`)
+
+
 ## 1.0.0
 
 ### Major Changes
@@ -7,7 +14,6 @@
 - experimental build of fork with updated deck.gl/luma.gl
 
 ### Patch Changes
-
 
 ## 0.16.1
 

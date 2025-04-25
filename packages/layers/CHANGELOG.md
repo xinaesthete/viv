@@ -1,5 +1,15 @@
 # @vivjs-experimental/layers
 
+## 1.0.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @vivjs-experimental/constants@1.0.1
+  - @vivjs-experimental/extensions@1.0.1
+  - @vivjs-experimental/loaders@1.0.1
+  - @vivjs-experimental/types@1.0.1
+
 ## 1.0.0
 
 ### Major Changes

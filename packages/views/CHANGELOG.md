@@ -1,5 +1,13 @@
 # @vivjs-experimental/views
 
+## 1.0.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @vivjs-experimental/layers@1.0.1
+  - @vivjs-experimental/loaders@1.0.1
+
 ## 1.0.0
 
 ### Major Changes

@@ -5,7 +5,7 @@ uniform vec3 transparentColor;
 uniform bool useTransparentColor;
 uniform float opacity;
 
-uniform vec3 colors[6];
+uniform vec3 colors[MAX_CHANNELS];
 
 ${apply_transparent_color}
 
@@ -16,6 +16,13 @@ void mutate_color(inout vec3 rgb, float intensity0, float intensity1, float inte
   rgb += max(0.0, min(1.0, intensity3)) * vec3(colors[3]);
   rgb += max(0.0, min(1.0, intensity4)) * vec3(colors[4]);
   rgb += max(0.0, min(1.0, intensity5)) * vec3(colors[5]);
+}
+
+// New array-based version for dynamic channel support
+void mutate_color_array(inout vec3 rgb, float intensities[MAX_CHANNELS], int numChannels) {
+  for(int i = 0; i < numChannels && i < MAX_CHANNELS; i++) {
+    rgb += max(0.0, min(1.0, intensities[i])) * vec3(colors[i]);
+  }
 }
 
 vec4 apply_opacity(vec3 rgb) {
@@ -29,10 +36,18 @@ mutate_color(rgb, intensity0, intensity1, intensity2, intensity3, intensity4, in
 rgba = apply_opacity(rgb);
 `;
 
+// New array-based implementation
+const DECKGL_MUTATE_COLOR_ARRAY = `\
+vec3 rgb = rgba.rgb;
+mutate_color_array(rgb, intensities, numChannels);
+rgba = apply_opacity(rgb);
+`;
+
 export default {
   name: 'color-palette-module',
   fs,
   inject: {
-    'fs:DECKGL_MUTATE_COLOR': DECKGL_MUTATE_COLOR
+    'fs:DECKGL_MUTATE_COLOR': DECKGL_MUTATE_COLOR,
+    'fs:DECKGL_MUTATE_COLOR_ARRAY': DECKGL_MUTATE_COLOR_ARRAY
   }
 };

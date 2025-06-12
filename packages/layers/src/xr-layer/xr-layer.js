@@ -5,6 +5,7 @@ import { COORDINATE_SYSTEM, Layer, picking, project32 } from '@deck.gl/core';
 import { GL } from '@luma.gl/constants';
 import { Geometry, Model } from '@luma.gl/engine';
 import { ShaderAssembler } from '@luma.gl/shadertools';
+import { MAX_CHANNELS } from '@vivjs/constants';
 import { padContrastLimits } from '../utils';
 import channels from './shader-modules/channel-intensity';
 import { getRenderingAttrs } from './utils';
@@ -61,7 +62,8 @@ const XRLayer = class extends Layer {
     return super.getShaders({
       ...shaderModule,
       defines: {
-        SAMPLER_TYPE: sampler
+        SAMPLER_TYPE: sampler,
+        MAX_CHANNELS: String(MAX_CHANNELS)
       },
       modules: [project32, picking, newChannelsModule]
     });
@@ -110,6 +112,8 @@ const XRLayer = class extends Layer {
 
     const mutateStr =
       'fs:DECKGL_MUTATE_COLOR(inout vec4 rgba, float intensity0, float intensity1, float intensity2, float intensity3, float intensity4, float intensity5, vec2 vTexCoord)';
+    const mutateArrayStr =
+      'fs:DECKGL_MUTATE_COLOR_ARRAY(inout vec4 rgba, float intensities[MAX_CHANNELS], int numChannels, vec2 vTexCoord)';
     const processStr =
       'fs:DECKGL_PROCESS_INTENSITY(inout float intensity, vec2 contrastLimits, int channelIndex)';
     // Only initialize shader hook functions _once globally_
@@ -121,6 +125,9 @@ const XRLayer = class extends Layer {
     // it may be better to add these hooks somewhere else rather than in initializeState of a layer?
     if (!shaderAssembler._hookFunctions.includes(mutateStr)) {
       shaderAssembler.addShaderHook(mutateStr);
+    }
+    if (!shaderAssembler._hookFunctions.includes(mutateArrayStr)) {
+      shaderAssembler.addShaderHook(mutateArrayStr);
     }
     if (!shaderAssembler._hookFunctions.includes(processStr)) {
       shaderAssembler.addShaderHook(processStr);

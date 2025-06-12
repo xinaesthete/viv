@@ -6,38 +6,56 @@ precision highp float;
 precision highp int;
 precision highp SAMPLER_TYPE;
 
-// our texture
-uniform SAMPLER_TYPE channel0;
-uniform SAMPLER_TYPE channel1;
-uniform SAMPLER_TYPE channel2;
-uniform SAMPLER_TYPE channel3;
-uniform SAMPLER_TYPE channel4;
-uniform SAMPLER_TYPE channel5;
+// MAX_CHANNELS is defined via shader compilation defines from the constants package
+// Texture sampler array - samplers cannot be in UBOs so they remain as individual uniforms
+uniform SAMPLER_TYPE channels[MAX_CHANNELS];
+
+// Channel data in a Uniform Buffer Object with separate arrays
+layout(std140) uniform ChannelData {
+  int numChannels;
+  float _padding1;
+  float _padding2;
+  float _padding3;
+  float intensities[MAX_CHANNELS];
+  vec2 contrastLimits[MAX_CHANNELS];  // [min, max] for each channel
+};
 
 in vec2 vTexCoord;
-
-// range
-uniform vec2 contrastLimits[6];
 
 out vec4 fragColor;
 
 void main() {
-
-  float intensity0 = float(texture(channel0, vTexCoord).r);
-  DECKGL_PROCESS_INTENSITY(intensity0, contrastLimits[0], 0);
-  float intensity1 = float(texture(channel1, vTexCoord).r);
-  DECKGL_PROCESS_INTENSITY(intensity1, contrastLimits[1], 1);
-  float intensity2 = float(texture(channel2, vTexCoord).r);
-  DECKGL_PROCESS_INTENSITY(intensity2, contrastLimits[2], 2);
-  float intensity3 = float(texture(channel3, vTexCoord).r);
-  DECKGL_PROCESS_INTENSITY(intensity3, contrastLimits[3], 3);
-  float intensity4 = float(texture(channel4, vTexCoord).r);
-  DECKGL_PROCESS_INTENSITY(intensity4, contrastLimits[4], 4);
-  float intensity5 = float(texture(channel5, vTexCoord).r);
-  DECKGL_PROCESS_INTENSITY(intensity5, contrastLimits[5], 5);
-
-  DECKGL_MUTATE_COLOR(fragColor, intensity0, intensity1, intensity2, intensity3, intensity4, intensity5, vTexCoord);
-
+  // Sample textures and apply processing
+  float processedIntensities[MAX_CHANNELS];
+  
+  for(int i = 0; i < MAX_CHANNELS; i++) {
+    if(i < numChannels) {
+      float rawIntensity = float(texture(channels[i], vTexCoord).r);
+      processedIntensities[i] = rawIntensity;
+      DECKGL_PROCESS_INTENSITY(processedIntensities[i], contrastLimits[i], i);
+    } else {
+      processedIntensities[i] = 0.0;
+    }
+  }
+  
+  // Use the array-friendly approach - this allows extensions to either:
+  // 1. Continue using individual parameters (backwards compatible)
+  // 2. Use DECKGL_MUTATE_COLOR_ARRAY for array-based implementations
+  #ifdef DECKGL_MUTATE_COLOR_ARRAY
+    DECKGL_MUTATE_COLOR_ARRAY(fragColor, processedIntensities, numChannels, vTexCoord);
+  #else
+    // Backwards compatible individual parameter version
+    DECKGL_MUTATE_COLOR(
+      fragColor, 
+      processedIntensities[0], 
+      processedIntensities[1], 
+      processedIntensities[2], 
+      processedIntensities[3], 
+      processedIntensities[4], 
+      processedIntensities[5], 
+      vTexCoord
+    );
+  #endif
 
   geometry.uv = vTexCoord;
   DECKGL_FILTER_COLOR(fragColor, geometry);

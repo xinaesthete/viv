@@ -8,7 +8,33 @@ This hook allows for custom processing of raw pixel intensities. For example, a 
 
 #### `DECKGL_MUTATE_COLOR(inout vec4 rgba, float intensity0, float intensity1, float intensity2, float intensity3, float intensity4, float intensity5, vec2 vTexCoord)`
 
-This hook allows for users to mutate conversion of a processed intensity (from `DECKGL_PROCESS_INTENSITY`) into a color. This is only available in 2D layers. An implementation for this hook is required by all Viv extensions.
+This hook allows for users to mutate conversion of a processed intensity (from `DECKGL_PROCESS_INTENSITY`) into a color. This is the traditional approach that passes individual intensity parameters for each channel (up to 6 channels). This is only available in 2D layers. An implementation for this hook is required by all Viv extensions.
+
+#### `DECKGL_MUTATE_COLOR_ARRAY(inout vec4 rgba, float intensities[MAX_CHANNELS], int numChannels, vec2 vTexCoord)`
+
+This is a newer array-based hook that allows for more flexible handling of variable channel counts. Instead of individual parameters, it receives an array of intensities and the actual number of active channels. This approach is particularly useful for:
+- Dynamic channel counts (not limited to exactly 6 channels)
+- Loop-based processing in extensions
+- Better performance with many channels
+- Cleaner extension code
+
+Extensions can implement either `DECKGL_MUTATE_COLOR` (traditional) or `DECKGL_MUTATE_COLOR_ARRAY` (array-based), or both for maximum compatibility. The shader will automatically use the array-based version if available, falling back to the traditional version otherwise.
+
+Example array-based implementation:
+```glsl
+// In your extension's shader module
+void mutate_color_array(inout vec3 rgb, float intensities[MAX_CHANNELS], int numChannels) {
+  for(int i = 0; i < numChannels && i < MAX_CHANNELS; i++) {
+    rgb += applyChannelEffect(intensities[i], i);
+  }
+}
+
+const DECKGL_MUTATE_COLOR_ARRAY = `\
+vec3 rgb = rgba.rgb;
+mutate_color_array(rgb, intensities, numChannels);
+rgba = vec4(rgb, rgba.a);
+`;
+```
 
 #### `DECKGL_FILTER_COLOR(inout vec4 color, FragmentGeometry geometry)`
 
@@ -16,4 +42,4 @@ Please see deck.gl's [documentation](https://deck.gl/docs/developer-guide/custom
 
 ### 3D
 
-Viv's shaders can be modified in 3D similar to the above, with the exception of `DECKGL_MUTATE_COLOR`. Instead, at least one provided extension must implement `_BEFORE_RENDER`, `_RENDER` and `_AFTER_RENDER`. Specifically, one extension must have `opts.rendering` as an object with at least the `_RENDER` property a string that contains valid glsl code. For example, the `MaximumIntensityProjectionExtension` uses `_BEFORE_RENDER` to set up an array which will hold the found maximum intensities. `_RENDER` fills that array as maximum intensities are found. And finally `_AFTER_RENDER` will place those intensities in the `color` or `fragColor` buffer to be rendered.
+Viv's shaders can be modified in 3D similar to the above, with the exception of `DECKGL_MUTATE_COLOR` and `DECKGL_MUTATE_COLOR_ARRAY`. Instead, at least one provided extension must implement `_BEFORE_RENDER`, `_RENDER` and `_AFTER_RENDER`. Specifically, one extension must have `opts.rendering` as an object with at least the `_RENDER` property a string that contains valid glsl code. For example, the `MaximumIntensityProjectionExtension` uses `_BEFORE_RENDER` to set up an array which will hold the found maximum intensities. `_RENDER` fills that array as maximum intensities are found. And finally `_AFTER_RENDER` will place those intensities in the `color` or `fragColor` buffer to be rendered.
